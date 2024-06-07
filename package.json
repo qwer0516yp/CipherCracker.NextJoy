@@ -13,7 +13,11 @@
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
     "@mui/joy": "next",
+    "@mui/material": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
