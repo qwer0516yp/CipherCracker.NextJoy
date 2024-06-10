@@ -20,6 +20,7 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import MediationIcon from '@mui/icons-material/MediationRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
@@ -126,7 +127,7 @@ export default function Sidebar() {
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-md">CipherCracker</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
@@ -150,19 +151,19 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-            <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-                Basic
-            </ListSubheader>
-            <ListItem>
-                <ListItemButton>
-                    <HomeRoundedIcon />
-                    <ListItemContent>
-                        <NextLink color="neutral" href="/hash" passHref>
-                            <Typography level="title-sm">Hash</Typography>
-                        </NextLink>
-                    </ListItemContent>
-                </ListItemButton>
-            </ListItem>
+          <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
+              Basic
+          </ListSubheader>
+          <ListItem>
+              <ListItemButton>
+                  <MediationIcon />
+                  <ListItemContent>
+                      <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
+                          <Typography level="title-sm">Hash</Typography>
+                      </NextLink> 
+                  </ListItemContent>
+              </ListItemButton>
+          </ListItem>
           <ListItem>
             <ListItemButton>
               <DashboardRoundedIcon />
@@ -171,7 +172,6 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-
           <ListItem>
             <ListItemButton>
               <ShoppingCartRoundedIcon />
@@ -180,7 +180,6 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-
           <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
@@ -273,9 +272,9 @@ export default function Sidebar() {
             mb: 2,
           }}
         >
-            <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-                Pro
-            </ListSubheader>
+          <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
+              Pro
+          </ListSubheader>
           <ListItem>
             <ListItemButton>
               <SupportRoundedIcon />

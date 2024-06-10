@@ -12,6 +12,7 @@ export const metadata = {
 };
 
 export default function RootLayout(props: { children: React.ReactNode }) {
+
   return (
     <html lang="en">
       <head>
@@ -45,10 +46,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               overflow: 'auto',
             }}
           >
-            {props.children}
+            <main>
+              {props.children}
+            </main>
           </Box>
         </Box>
-        
       </CssVarsProvider>
       </body>
     </html>

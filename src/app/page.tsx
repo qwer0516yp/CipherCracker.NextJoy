@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -17,8 +15,6 @@ import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRigh
 
 export default function TeamExample() {
   
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-
   const peopleData = [
     {
       name: 'Andrew Smith',
@@ -103,9 +99,9 @@ export default function TeamExample() {
   ];
 
   return (
-    
-      
-        <List
+    <Box sx={{ flex: 1, width: '100%' }}>
+      <Box sx={{ px: { xs: 2, md: 6 } }}>
+      <List
           sx={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
@@ -190,7 +186,8 @@ export default function TeamExample() {
             </Sheet>
           ))}
         </List>
-      
-    
+      </Box>
+    </Box>
+        
   );
 }
