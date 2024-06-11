@@ -21,7 +21,6 @@ import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import MediationIcon from '@mui/icons-material/MediationRounded';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
@@ -276,7 +275,7 @@ export default function Sidebar() {
               Pro
           </ListSubheader>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton role="menuitem" component="a" href="https://buymeacoffee.com/owenyuan">
               <SupportRoundedIcon />
               Support
             </ListItemButton>
@@ -312,11 +311,6 @@ export default function Sidebar() {
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Avatar
-          variant="outlined"
-          size="sm"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-        />
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography level="title-sm">Siriwat K.</Typography>
           <Typography level="body-xs">siriwatk@test.com</Typography>

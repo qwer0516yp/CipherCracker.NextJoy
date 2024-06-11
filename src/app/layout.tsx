@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { CssVarsProvider } from '@mui/joy/styles';
-import CssBaseline from '@mui/joy/CssBaseline';
-import Box from '@mui/joy/Box';
-import NavBar from '@/components/NavBar';
+import { Box, CssBaseline } from '@mui/joy';
+import UserBar from '@/components/UserBar';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 
@@ -47,6 +46,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             }}
           >
             <main>
+              <UserBar />
               {props.children}
             </main>
           </Box>

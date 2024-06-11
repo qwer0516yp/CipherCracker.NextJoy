@@ -19,6 +19,8 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "next": "latest",
+    "next-auth": "5.0.0-beta.19",
+    "prettier": "^3.3.1",
     "react": "latest",
     "react-dom": "latest"
   },
@@ -29,5 +31,11 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "latest"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none"
   }
 }
