@@ -18,9 +18,9 @@
     "@mui/material": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "next": "latest",
+    "next": "^14.2.4",
     "next-auth": "5.0.0-beta.19",
-    "prettier": "^3.3.1",
+    "prettier": "^3.3.2",
     "react": "latest",
     "react-dom": "latest"
   },
@@ -28,7 +28,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "eslint": "latest",
+    "eslint": "^8.56.0",
     "eslint-config-next": "latest",
     "typescript": "latest"
   },
