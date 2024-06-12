@@ -10,7 +10,7 @@ export async function User() {
   if (!user) {
     return (
       <Stack direction="row" justifyContent="end" spacing={1}>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', justifyContent: "flex-end" }}>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', justifyContent: "flex-end", position: 'fixed' }}>
           <Avatar
             variant="outlined"
             size="sm"

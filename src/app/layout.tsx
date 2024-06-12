@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { Box, CssBaseline } from '@mui/joy';
-import UserBar from '@/components/UserBar';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
+import ProtectedComponent from '@/components/ProtectedComponent';
 
 export const metadata = {
   title: 'CipherCracker',
@@ -28,7 +28,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <CssVarsProvider disableTransitionOnChange>
         <CssBaseline />
         <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-          <Sidebar />
+          <Sidebar>
+            <ProtectedComponent/>
+          </Sidebar>
           <Header />
           <Box
             component="main"
@@ -46,7 +48,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             }}
           >
             <main>
-              <UserBar />
               {props.children}
             </main>
           </Box>

@@ -29,13 +29,13 @@ import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import NextLink from 'next/link';
+import SessionProvider from "@/components/SessionProvider";
 
 function Toggler({
   defaultExpanded = false,
@@ -69,7 +69,7 @@ function Toggler({
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({children}: {children:React.ReactNode}) {
   return (
     <Sheet
       className="Sidebar"
@@ -311,13 +311,9 @@ export default function Sidebar() {
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
-        </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
-          <LogoutRoundedIcon />
-        </IconButton>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </Box>
     </Sheet>
   );
