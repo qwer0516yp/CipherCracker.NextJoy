@@ -16,7 +16,9 @@ const ProtectedComponent = () => {
   if (!session) {
     return (
       <React.Fragment>
-        <h3>You are not logged in</h3>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography level="title-sm">You are not logged in</Typography>
+        </Box>
         <IconButton size="sm" variant="plain" color="success">
           <LoginRoundedIcon onClick={() => signIn()}/>
         </IconButton>
@@ -24,6 +26,8 @@ const ProtectedComponent = () => {
     );
   }
 
+  console.log(session?.user);
+  
   return (
     <React.Fragment>
         <Avatar

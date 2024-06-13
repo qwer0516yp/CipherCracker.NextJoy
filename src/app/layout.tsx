@@ -25,7 +25,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         />
       </head>
       <body>
-      <CssVarsProvider disableTransitionOnChange>
+      <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
         <CssBaseline />
         <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
           <Sidebar>
