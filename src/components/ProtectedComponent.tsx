@@ -37,8 +37,8 @@ const ProtectedComponent = () => {
           alt="/images/unknown-user.png"
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">{session?.user?.name}</Typography>
-          <Typography level="body-xs">{session?.user?.email}</Typography>
+          <Typography level="title-sm" noWrap>{session?.user?.name}</Typography>
+          <Typography level="body-xs" noWrap>{session?.user?.email}</Typography>
         </Box>
         <IconButton size="sm" variant="plain" color="neutral">
           <LogoutRoundedIcon onClick={() => signOut()}/>
