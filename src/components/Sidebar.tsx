@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
-import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
@@ -31,6 +30,8 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
@@ -154,14 +155,24 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
               Basic
           </ListSubheader>
           <ListItem>
-              <ListItemButton>
-                  <MediationIcon />
-                  <ListItemContent>
-                      <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
-                          <Typography level="title-sm">Hash</Typography>
-                      </NextLink> 
-                  </ListItemContent>
-              </ListItemButton>
+            <ListItemButton>
+              <MediationIcon />
+              <ListItemContent>
+                <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
+                  <Typography level="title-sm">Hash</Typography>
+                </NextLink> 
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <EditNoteIcon />
+              <ListItemContent>
+                <NextLink color="neutral" href="/hmac" style={{textDecoration: 'none'}} passHref>
+                  <Typography level="title-sm">HMAC</Typography>
+                </NextLink>
+              </ListItemContent>
+            </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton>
@@ -284,6 +295,16 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
             <ListItemButton>
               <SettingsRoundedIcon />
               Settings
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <SportsEsportsIcon />
+              <ListItemContent>
+                <NextLink color="neutral" href="/sandbox" style={{textDecoration: 'none'}} passHref>
+                  <Typography level="title-sm">Sandbox</Typography>
+                </NextLink>
+              </ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>
