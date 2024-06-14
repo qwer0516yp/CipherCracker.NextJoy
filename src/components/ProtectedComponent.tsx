@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { Box, Typography, Avatar, IconButton } from '@mui/joy';
+import { Box, Typography, Avatar, IconButton, CircularProgress } from '@mui/joy';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import React from 'react';
@@ -10,7 +10,7 @@ const ProtectedComponent = () => {
   const { data: session, status } = useSession();
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return <CircularProgress variant="plain" thickness={2}/>; 
   }
 
   if (!session) {

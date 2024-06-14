@@ -310,7 +310,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
         </Card>
       </Box>
       <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh' }}>
         <SessionProvider>
           {children}
         </SessionProvider>
