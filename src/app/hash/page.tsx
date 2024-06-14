@@ -1,5 +1,6 @@
+'use client';
+
 import * as React from 'react';
-import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Link from '@mui/joy/Link';
@@ -7,6 +8,7 @@ import NextLink from 'next/Link';
 
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import HashGenerator from '@/components/front-end/HashGenerator';
 
 export default function Home() {
   return (
@@ -42,9 +44,7 @@ export default function Home() {
               Hash
             </NextLink>
           </Breadcrumbs>
-          <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            My Hashers TODO
-          </Typography>
+          <HashGenerator />
         </Box>
       </Box>
     </Box>
