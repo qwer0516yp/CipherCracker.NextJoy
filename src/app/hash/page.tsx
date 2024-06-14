@@ -3,7 +3,6 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
-import Link from '@mui/joy/Link';
 import NextLink from 'next/link';
 
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -28,17 +27,17 @@ export default function Home() {
             separator={<ChevronRightRoundedIcon />}
             sx={{ pl: 0 }}
           >
-            <Link
-              underline="none"
+            <NextLink
               color="neutral"
-              href="#some-link"
-              aria-label="Home"
+              href="/"
+              passHref
             >
               <HomeRoundedIcon />
-            </Link>
+            </NextLink>
             <NextLink
               color="neutral"
               href="/hash"
+              style={{textDecoration: 'none'}}
               passHref
             >
               Hash
