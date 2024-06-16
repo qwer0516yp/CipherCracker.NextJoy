@@ -29,6 +29,7 @@ import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import AbcIcon from '@mui/icons-material/Abc';
 
 import SidebarDrawer from './SidebarDrawer';
 
@@ -129,7 +130,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
         <Typography level="title-md">CipherCracker</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="coming soon..." />
       <Box
         sx={{
           minHeight: 0,
@@ -153,6 +154,16 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
           <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
               Basic
           </ListSubheader>
+          <ListItem>
+            <ListItemButton>
+              <AbcIcon />
+              <ListItemContent>
+                <NextLink color="neutral" href="/encoding" style={{textDecoration: 'none'}} passHref>
+                  <Typography level="title-sm">Encoding</Typography>
+                </NextLink> 
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
           <ListItem>
             <ListItemButton>
               <MediationIcon />
