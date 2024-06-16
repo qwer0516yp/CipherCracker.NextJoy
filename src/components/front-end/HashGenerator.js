@@ -47,7 +47,6 @@ export default function HashGenerator() {
 
   return (
     <div>
-      <h1>Hash Generator</h1>
       <p>
         This is for demonstration purposes only. Client-side hashing exposes
         data in the browser and is not suitable for sensitive information.
@@ -64,7 +63,6 @@ export default function HashGenerator() {
           </Typography>
         }
       />
-      <br />
       {/* MD5 */}
       {input && md5HashedText && (
         <div>
@@ -88,7 +86,6 @@ export default function HashGenerator() {
           />
         </div>
       )}
-      <br />
       {/* SHA-1 */}
       {input && sha1HashedText && (
         <div>
@@ -112,7 +109,6 @@ export default function HashGenerator() {
           />
         </div>
       )}
-      <br />
       {/* SHA-2 */}
       {input && sha256HashedText && (
         <div>
@@ -142,7 +138,6 @@ export default function HashGenerator() {
           />
         </div>
       )}
-      <br />
       {/* SHA-3 */}
       {input && sha3_512HashedText && (
         <div>
