@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import HashGenerator from '@/components/front-end/HashGenerator';
+import HmacGenerator from '@/components/front-end/HmacGenerator';
 
 export default function Home() {
   return (
@@ -43,7 +43,7 @@ export default function Home() {
               HMAC
             </NextLink>
           </Breadcrumbs>
-          <HashGenerator />
+          <HmacGenerator />
         </Box>
       </Box>
     </Box>
