@@ -23,6 +23,7 @@
     "next-auth": "5.0.0-beta.19",
     "prettier": "^3.3.2",
     "react": "latest",
+    "react-ace": "^11.0.1",
     "react-dom": "latest"
   },
   "devDependencies": {

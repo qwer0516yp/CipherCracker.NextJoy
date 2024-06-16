@@ -24,7 +24,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning={true}>
       <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
         <CssBaseline />
         <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
@@ -47,9 +47,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               overflow: 'auto',
             }}
           >
-            <main>
-              {props.children}
-            </main>
+            {props.children}
           </Box>
         </Box>
       </CssVarsProvider>

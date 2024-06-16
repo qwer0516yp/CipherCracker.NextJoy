@@ -14,7 +14,7 @@ export default function Home() {
     <Box sx={{ flex: 1, width: '100%' }}>
       <Box
         sx={{
-          position: 'sticky',
+          position: "initial",
           top: { sm: -100, md: -110 },
           bgcolor: 'background.body',
           zIndex: 9995,
