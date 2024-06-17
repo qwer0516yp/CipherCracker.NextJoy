@@ -25,7 +25,7 @@ export default function HmacGenerator() {
   const [hmacSha1Hex, setHmacSha1Hex] = useState('');
   //Hmac - SHA-2: HmacSHA256
   const [hmacSha256Hex, setHmacSha256Hex] = useState('');
-  //Hmac - SHA-3: HmacSHA512
+  //Hmac - SHA-2: HmacSHA512
   const [hmacSha512Hex, setHmacSha512Hex] = useState('');
 
   const generateHmac = (userInput, passphrase) => {
@@ -61,9 +61,13 @@ export default function HmacGenerator() {
 
   return (
     <div>
-      <p>This is for demonstration purposes only.</p>
+      <p>
+        Keyed-hash message authentication codes (HMAC) is a mechanism for
+        message authentication using cryptographic hash functions.
+      </p>
+      <p>This is for demonstration purposes only. Output as a HEX string.</p>
       <Input
-        color="danger"
+        color="warning"
         variant="soft"
         value={passphrase}
         onChange={handlePassphraseChange}
@@ -164,17 +168,16 @@ export default function HmacGenerator() {
             sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
           >
             <Typography fontSize="xl">HmacSHA512</Typography>
-            <Chip color="success" variant="soft">
-              Recommanded
+            <Chip color="primary" variant="soft">
+              OK
             </Chip>
-            <Alert variant="soft" color="success">
-              passphrase authenticated SHA3 (SHA3 output hash lengths of one of
-              224, 256, 384, or 512 bits. The default is 512 bits)
+            <Alert variant="soft" color="primary">
+              passphrase authenticated SHA512 (SHA-2)
             </Alert>
           </Box>
           <Input
             type="text"
-            color="success"
+            color="primary"
             value={hmacSha512Hex}
             endDecorator={`${hmacSha512Hex.length / 2} byte(s)`}
             readOnly

@@ -48,9 +48,10 @@ export default function HashGenerator() {
   return (
     <div>
       <p>
-        This is for demonstration purposes only. Client-side hashing exposes
-        data in the browser and is not suitable for sensitive information.
+        Client-side hashing exposes data in the browser and is not suitable for
+        sensitive information.
       </p>
+      <p>This is for demonstration purposes only. Output as a HEX string.</p>
       <Textarea
         value={input}
         onChange={handleInputChange}
