@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Box, Drawer, DialogTitle, ModalClose } from '@mui/joy';
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -11,8 +12,8 @@ export default function DrawerCloseButton() {
   
   return (
     <React.Fragment>
-      <Button variant="outlined" color="neutral" onClick={() => setDrawerOpen(true)}>
-        Open drawer
+      <Button variant="outlined" color="neutral" endDecorator={<SpeakerNotesIcon />} onClick={() => setDrawerOpen(true)}>
+        Open Drawer
       </Button>
       <Drawer size="lg" anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <ModalClose />

@@ -4,7 +4,6 @@ import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
-import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
@@ -18,18 +17,14 @@ import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import MediationIcon from '@mui/icons-material/MediationRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
-import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
-import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import AbcIcon from '@mui/icons-material/Abc';
+import Diversity1Icon from '@mui/icons-material/Diversity1';
 
 import SidebarDrawer from './SidebarDrawer';
 
@@ -164,49 +159,14 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <MediationIcon />
-              <ListItemContent>
-                <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
-                  <Typography level="title-sm">Hash</Typography>
-                </NextLink> 
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <EditNoteIcon />
-              <ListItemContent>
-                <NextLink color="neutral" href="/hmac" style={{textDecoration: 'none'}} passHref>
-                  <Typography level="title-sm">HMAC</Typography>
-                </NextLink>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ShoppingCartRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
+
           <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <AssignmentRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                    <Typography level="title-sm">Hashing</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -215,67 +175,25 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
               )}
             >
               <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>All tasks</ListItemButton>
-                </ListItem>
                 <ListItem>
-                  <ListItemButton>Backlog</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>In progress</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Done</ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/messages/"
-            >
-              <QuestionAnswerRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
-              </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component="a"
-                    href="/joy-ui/getting-started/templates/profile-dashboard/"
-                  >
-                    My profile
+                  <ListItemButton>
+                    <MediationIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">Hash</Typography>
+                      </NextLink> 
+                    </ListItemContent>
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
+                  <ListItemButton>
+                    <EditNoteIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/hmac" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">HMAC</Typography>
+                      </NextLink>
+                    </ListItemContent>
+                  </ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -297,7 +215,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
           </ListSubheader>
           <ListItem>
             <ListItemButton role="menuitem" component="a" href="https://buymeacoffee.com/owenyuan">
-              <SupportRoundedIcon />
+              <Diversity1Icon />
               Support
             </ListItemButton>
           </ListItem>
