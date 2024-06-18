@@ -4,6 +4,7 @@ import { Box, CssBaseline } from '@mui/joy';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import ProtectedComponent from '@/components/ProtectedComponent';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'CipherCracker',
@@ -51,6 +52,8 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           </Box>
         </Box>
       </CssVarsProvider>
+
+      <Analytics />
       </body>
     </html>
   );
