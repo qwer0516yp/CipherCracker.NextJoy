@@ -12,20 +12,22 @@ import BuildIcon from '@mui/icons-material/Build';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 
-import siteMapPic from '../public/sitemap.png';
-
 function SiteMapCard() {
   return (
     <Card>
-      <AspectRatio minHeight="120px" maxHeight="820px">
+      <AspectRatio minHeight="120px" maxHeight="550px">
         <Image
           alt="sitemap"
-          src={siteMapPic}
+          src="https://res.cloudinary.com/di3v5uowz/image/upload/v1718795150/sitemap_iiemll.png"
+          width={1981}
+          height={820}
+          quality={100}
           sizes="100vw"
           // Make the image display full width
           style={{
             width: '100%',
             height: 'auto',
+            objectFit: 'cover'
           }}
           loading="lazy"
         />
@@ -69,15 +71,15 @@ export default function HomePage() {
         <SiteMapCard />
 
         <h3>Reference</h3>
-        <p>
-          <ul>
-            <li><a href="https://st-akey.gitbook.io/cipher-cracker-next-joy">Userguide on Gitbook</a></li>
-            <li><a href="https://github.com/qwer0516yp/CipherCracker.NextJoy">Source Code on Github</a></li>
-            <li><a href="https://cryptobook.nakov.com/">Practical Cryptography For Developers, by Svetlin Nakov</a></li>
-            <li><a href="https://fireship.io/lessons/node-crypto-examples/">Cryptography Concepts For Node.JS Developers, By Jeff Delaney</a></li>
-            <li><a href="https://cryptojs.gitbook.io/docs">Crypto JS Gitbook</a></li>
-          </ul>
-        </p>
+        
+        <ul>
+          <li><a href="https://st-akey.gitbook.io/cipher-cracker-next-joy">Userguide on Gitbook</a></li>
+          <li><a href="https://github.com/qwer0516yp/CipherCracker.NextJoy">Source Code on Github</a></li>
+          <li><a href="https://cryptobook.nakov.com/">Practical Cryptography For Developers, by Svetlin Nakov</a></li>
+          <li><a href="https://fireship.io/lessons/node-crypto-examples/">Cryptography Concepts For Node.JS Developers, By Jeff Delaney</a></li>
+          <li><a href="https://cryptojs.gitbook.io/docs">Crypto JS Gitbook</a></li>
+        </ul>
+        
       </Box>
     </Box>
         
