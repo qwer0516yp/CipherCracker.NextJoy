@@ -1,191 +1,83 @@
 import * as React from 'react';
-import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
-import List from '@mui/joy/List';
-import Divider from '@mui/joy/Divider';
-import ListItem from '@mui/joy/ListItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import ListItemContent from '@mui/joy/ListItemContent';
-import Sheet from '@mui/joy/Sheet';
+import { AspectRatio, Box, Button, Card, CardContent, Typography } from '@mui/joy';
 
-import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
+import Image from 'next/image';
 
-export default function TeamExample() {
+import ConstructionIcon from '@mui/icons-material/Construction';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import BuildIcon from '@mui/icons-material/Build';
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+
+import siteMapPic from '../public/sitemap.png';
+
+function SiteMapCard() {
+  return (
+    <Card>
+      <AspectRatio minHeight="120px" maxHeight="820px">
+        <Image
+          alt="sitemap"
+          src={siteMapPic}
+          sizes="100vw"
+          // Make the image display full width
+          style={{
+            width: '100%',
+            height: 'auto',
+          }}
+          loading="lazy"
+        />
+      </AspectRatio>
+      <CardContent orientation="horizontal">
+        <div>
+          <Typography level="body-xs">https://st-akey.gitbook.io/cipher-cracker-next-joy</Typography>
+        </div>
+        <Button
+          component="a"
+          variant="solid"
+          size="md"
+          color="primary"
+          startDecorator={<OpenInNew />}
+          aria-label="Explore Gitbook page"
+          href="https://st-akey.gitbook.io/cipher-cracker-next-joy"
+          sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+        >
+          Explore more on Gitbook
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function HomePage() {
   
-  const peopleData = [
-    {
-      name: 'Andrew Smith',
-      position: 'UI Designer',
-      avatar2x: 'https://i.pravatar.cc/80?img=7',
-      companyData: [
-        {
-          role: 'Senior designer',
-          name: 'Dribbble',
-          logo: 'https://www.vectorlogo.zone/logos/dribbble/dribbble-icon.svg',
-          years: '2015-now',
-        },
-        {
-          role: 'Designer',
-          name: 'Pinterest',
-          logo: 'https://www.vectorlogo.zone/logos/pinterest/pinterest-icon.svg',
-          years: '2012-2015',
-        },
-      ],
-      skills: ['UI design', 'Illustration'],
-    },
-    {
-      name: 'John Doe',
-      position: 'Frontend Developer',
-      avatar2x: 'https://i.pravatar.cc/80?img=8',
-      companyData: [
-        {
-          role: 'UI Engineer',
-          name: 'Google',
-          logo: 'https://www.vectorlogo.zone/logos/google/google-icon.svg',
-          years: '2018-now',
-        },
-        {
-          role: 'Frontend Developer',
-          name: 'Amazon',
-          logo: 'https://www.vectorlogo.zone/logos/amazon/amazon-icon.svg',
-          years: '2015-2018',
-        },
-      ],
-      skills: ['HTML', 'CSS', 'JavaScript'],
-    },
-    {
-      name: 'Alice Johnson',
-      position: 'Product Manager',
-      avatar2x: 'https://i.pravatar.cc/80?img=9',
-      companyData: [
-        {
-          role: 'Product Manager',
-          name: 'Microsoft',
-          logo: 'https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg',
-          years: '2016-now',
-        },
-        {
-          role: 'Product Analyst',
-          name: 'IBM',
-          logo: 'https://www.vectorlogo.zone/logos/ibm/ibm-icon.svg',
-          years: '2013-2016',
-        },
-      ],
-      skills: ['Product Management', 'Market Analysis'],
-    },
-    {
-      name: 'Eva Brown',
-      position: 'Graphic Designer',
-      avatar2x: 'https://i.pravatar.cc/80?img=10',
-      companyData: [
-        {
-          role: 'Art Director',
-          name: 'Adobe',
-          logo: 'https://www.vectorlogo.zone/logos/adobe/adobe-icon.svg',
-          years: '2019-now',
-        },
-        {
-          role: 'Graphic Designer',
-          name: 'Apple',
-          logo: 'https://www.vectorlogo.zone/logos/apple/apple-icon.svg',
-          years: '2016-2019',
-        },
-      ],
-      skills: ['Graphic Design', 'Illustration'],
-    },
-  ];
-
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
       <Box sx={{ px: { xs: 2, md: 6 } }}>
-      <List
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: 2,
-          }}
-        >
-          {peopleData.map((person, index) => (
-            <Sheet
-              key={index}
-              component="li"
-              variant="outlined"
-              sx={{
-                borderRadius: 'sm',
-                p: 2,
-                listStyle: 'none',
-              }}
-            >
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Avatar
-                  variant="outlined"
-                  src={person.avatar2x}
-                  srcSet={`${person.avatar2x} 2x`}
-                  sx={{ borderRadius: '50%' }}
-                />
-                <div>
-                  <Typography level="title-md">{person.name}</Typography>
-                  <Typography level="body-xs">{person.position}</Typography>
-                </div>
-              </Box>
-              <Divider component="div" sx={{ my: 2 }} />
-              <List sx={{ '--ListItemDecorator-size': '40px', gap: 2 }}>
-                {person.companyData.map((company, companyIndex) => (
-                  <ListItem key={companyIndex} sx={{ alignItems: 'flex-start' }}>
-                    <ListItemDecorator
-                      sx={{
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          height: '100%',
-                          width: '1px',
-                          bgcolor: 'divider',
-                          left: 'calc(var(--ListItem-paddingLeft) + 12px)',
-                          top: '50%',
-                        },
-                      }}
-                    >
-                      <Avatar
-                        src={company.logo}
-                        sx={{ '--Avatar-size': '24px' }}
-                      />
-                    </ListItemDecorator>
-                    <ListItemContent>
-                      <Typography level="title-sm">{company.role}</Typography>
-                      <Typography level="body-xs">{company.name}</Typography>
-                    </ListItemContent>
-                    <Typography level="body-xs">{company.years}</Typography>
-                  </ListItem>
-                ))}
-              </List>
-              <Button
-                size="sm"
-                variant="plain"
-                endDecorator={<KeyboardArrowRightRoundedIcon fontSize="small" />}
-                sx={{ px: 1, mt: 1 }}
-              >
-                Expand
-              </Button>
-              <Divider component="div" sx={{ my: 2 }} />
-              <Typography level="title-sm">Skills tags:</Typography>
-              <Box sx={{ mt: 1.5, display: 'flex', gap: 1 }}>
-                {person.skills.map((skill, skillIndex) => (
-                  <Chip
-                    key={skillIndex}
-                    variant="outlined"
-                    color="neutral"
-                    size="sm"
-                  >
-                    {skill}
-                  </Chip>
-                ))}
-              </Box>
-            </Sheet>
-          ))}
-        </List>
+        <h1>CipherCracker</h1>
+        <Typography> - Your Swiss Army Knife to crack cipher related mystreries. Now available online for *FREE*.</Typography>
+        <p><AutoAwesomeIcon /> <ConstructionIcon /> <BuildIcon />  <HomeRepairServiceIcon /> <CatchingPokemonIcon /> <HandymanIcon /> <AutoFixHighIcon/></p>
+
+        <h3>Overview</h3>
+        <p>
+          CipherCracker is a web-based tool that helps you to crack ciphers and solve puzzles. It is a free and open-source project available on Github.
+        </p>
+
+        <h3>Site Map</h3>
+        <SiteMapCard />
+
+        <h3>Reference</h3>
+        <p>
+          <ul>
+            <li><a href="https://st-akey.gitbook.io/cipher-cracker-next-joy">Userguide on Gitbook</a></li>
+            <li><a href="https://github.com/qwer0516yp/CipherCracker.NextJoy">Source Code on Github</a></li>
+            <li><a href="https://cryptobook.nakov.com/">Practical Cryptography For Developers, by Svetlin Nakov</a></li>
+            <li><a href="https://fireship.io/lessons/node-crypto-examples/">Cryptography Concepts For Node.JS Developers, By Jeff Delaney</a></li>
+            <li><a href="https://cryptojs.gitbook.io/docs">Crypto JS Gitbook</a></li>
+          </ul>
+        </p>
       </Box>
     </Box>
         
