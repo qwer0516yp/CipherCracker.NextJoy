@@ -5,6 +5,7 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import ProtectedComponent from '@/components/ProtectedComponent';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: 'CipherCracker',
@@ -54,6 +55,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </CssVarsProvider>
 
       <Analytics />
+      <SpeedInsights />
       </body>
     </html>
   );
