@@ -13,10 +13,12 @@ import {
   Option,
   Typography,
   Button,
+  IconButton,
   Snackbar
 } from '@mui/joy';
 
 import WarningIcon from '@mui/icons-material/Warning';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export default function StringConvertor() {
   //Snackbar for showing none essential error when converting bytes into certain encoding
@@ -184,7 +186,16 @@ export default function StringConvertor() {
           <Input
             type="text"
             value={hexText}
-            endDecorator={`${hexText.length / 2} Byte(s)`}
+            endDecorator={
+              <>
+                {`${hexText.length / 2} Byte(s)`}
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(hexText)}
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
@@ -202,7 +213,16 @@ export default function StringConvertor() {
           <Input
             type="text"
             value={base64Text}
-            endDecorator={`${base64Text.length} Character(s)`}
+            endDecorator={
+              <>
+                {`${base64Text.length} Character(s)`}
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(base64Text)}
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
@@ -220,7 +240,16 @@ export default function StringConvertor() {
           <Input
             type="text"
             value={utf8Text}
-            endDecorator={`${utf8Text.length} Character(s)`}
+            endDecorator={
+              <>
+                {`${utf8Text.length} Character(s)`}
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(utf8Text)}
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
