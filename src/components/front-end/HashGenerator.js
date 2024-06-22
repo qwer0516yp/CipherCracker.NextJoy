@@ -3,15 +3,7 @@
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
 
-import {
-  Textarea,
-  Box,
-  Chip,
-  Input,
-  Alert,
-  Tooltip,
-  Typography
-} from '@mui/joy';
+import { Textarea, Box, Chip, Input, Alert, Typography } from '@mui/joy';
 
 export default function HashGenerator() {
   //userinput textarea
@@ -23,6 +15,7 @@ export default function HashGenerator() {
   const [sha1HashedText, setSha1HashedText] = useState('');
   //SHA-2
   const [sha256HashedText, setSha256HashedText] = useState('');
+  const [sha512HashedText, setSha512HashedText] = useState('');
   //SHA-3
   const [sha3_512HashedText, setSha3_512HashedText] = useState('');
 
@@ -33,6 +26,8 @@ export default function HashGenerator() {
     setSha1HashedText(hash_sha1);
     const hash_sha256 = CryptoJS.SHA256(userInput).toString(CryptoJS.enc.Hex);
     setSha256HashedText(hash_sha256);
+    const hash_sha512 = CryptoJS.SHA512(userInput).toString(CryptoJS.enc.Hex);
+    setSha512HashedText(hash_sha512);
     const hash_sha3_512 = CryptoJS.SHA3(userInput, {
       outputLength: 512
     }).toString(CryptoJS.enc.Hex);
@@ -93,7 +88,7 @@ export default function HashGenerator() {
           <Box
             sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
           >
-            <Typography fontSize="xl">SHA-1</Typography>
+            <Typography fontSize="xl">SHA1</Typography>
             <Chip color="warning" variant="soft">
               Weak
             </Chip>
@@ -116,18 +111,12 @@ export default function HashGenerator() {
           <Box
             sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
           >
-            <Typography fontSize="xl">SHA-2</Typography>
-            <Tooltip
-              arrow
-              placement="right-start"
-              title="SHA256 (SHA2, operate on 32-bit words)"
-            >
-              <Chip color="primary" variant="soft">
-                OK
-              </Chip>
-            </Tooltip>
+            <Typography fontSize="xl">SHA256</Typography>
+            <Chip color="primary" variant="soft">
+              OK
+            </Chip>
             <Alert variant="soft" color="primary">
-              SHA256 (SHA2, operate on 32-bit words)
+              SHA2, operate on 32-bit words
             </Alert>
           </Box>
           <Input
@@ -139,13 +128,35 @@ export default function HashGenerator() {
           />
         </div>
       )}
+      {input && sha512HashedText && (
+        <div>
+          <Box
+            sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
+          >
+            <Typography fontSize="xl">SHA512</Typography>
+            <Chip color="primary" variant="soft">
+              OK
+            </Chip>
+            <Alert variant="soft" color="primary">
+              SHA2, operate on 64-bit words
+            </Alert>
+          </Box>
+          <Input
+            type="text"
+            color="primary"
+            value={sha512HashedText}
+            endDecorator={`${sha512HashedText.length / 2} byte(s)`}
+            readOnly
+          />
+        </div>
+      )}
       {/* SHA-3 */}
       {input && sha3_512HashedText && (
         <div>
           <Box
             sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
           >
-            <Typography fontSize="xl">SHA-3</Typography>
+            <Typography fontSize="xl">SHA3</Typography>
             <Chip color="success" variant="soft">
               Recommanded
             </Chip>
