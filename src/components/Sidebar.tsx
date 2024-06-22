@@ -28,6 +28,11 @@ import TagIcon from '@mui/icons-material/Tag';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import KeyIcon from '@mui/icons-material/Key';
 import Filter3Icon from '@mui/icons-material/Filter3';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import TokenIcon from '@mui/icons-material/Token';
+import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 
 import SidebarDrawer from './SidebarDrawer';
 
@@ -145,7 +150,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
           size="sm"
           sx={{
             gap: 1,
-            '--List-nestedInsetStart': '30px',
+            '--List-nestedInsetStart': '10px',
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
@@ -233,6 +238,84 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                     <ListItemContent>
                       <NextLink color="neutral" href="/3DES" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">3DES</Typography>
+                      </NextLink>
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Toggler>
+          </ListItem>
+
+          <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <ShuffleIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Asymmetric</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                  />
+                </ListItemButton>
+              )}
+            >
+              <List sx={{ gap: 0.5 }}>
+                <ListItem>
+                  <ListItemButton>
+                    <SyncAltIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/RSA" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">RSA</Typography>
+                      </NextLink> 
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <AutoGraphIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/ECC" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">ECC</Typography>
+                      </NextLink>
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Toggler>
+          </ListItem>
+
+          <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <TokenIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">JWT</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                  />
+                </ListItemButton>
+              )}
+            >
+              <List sx={{ gap: 0.5 }}>
+                <ListItem>
+                  <ListItemButton>
+                    <TokenIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/jwt" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">JWT / JWS</Typography>
+                      </NextLink> 
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <EnhancedEncryptionIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/jwe" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">JWE</Typography>
                       </NextLink>
                     </ListItemContent>
                   </ListItemButton>
