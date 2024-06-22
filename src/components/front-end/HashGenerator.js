@@ -3,7 +3,17 @@
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
 
-import { Textarea, Box, Chip, Input, Alert, Typography } from '@mui/joy';
+import {
+  Textarea,
+  Box,
+  Chip,
+  Input,
+  Alert,
+  Typography,
+  IconButton
+} from '@mui/joy';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export default function HashGenerator() {
   //userinput textarea
@@ -123,7 +133,18 @@ export default function HashGenerator() {
             type="text"
             color="primary"
             value={sha256HashedText}
-            endDecorator={`${sha256HashedText.length / 2} byte(s)`}
+            endDecorator={
+              <>
+                {`${sha256HashedText.length / 2} byte(s)`}
+                <IconButton
+                  onClick={() =>
+                    navigator.clipboard.writeText(sha256HashedText)
+                  }
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
@@ -145,7 +166,18 @@ export default function HashGenerator() {
             type="text"
             color="primary"
             value={sha512HashedText}
-            endDecorator={`${sha512HashedText.length / 2} byte(s)`}
+            endDecorator={
+              <>
+                {`${sha512HashedText.length / 2} byte(s)`}
+                <IconButton
+                  onClick={() =>
+                    navigator.clipboard.writeText(sha512HashedText)
+                  }
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
@@ -169,7 +201,18 @@ export default function HashGenerator() {
             type="text"
             color="success"
             value={sha3_512HashedText}
-            endDecorator={`${sha3_512HashedText.length / 2} byte(s)`}
+            endDecorator={
+              <>
+                {`${sha3_512HashedText.length / 2} byte(s)`}
+                <IconButton
+                  onClick={() =>
+                    navigator.clipboard.writeText(sha3_512HashedText)
+                  }
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
             readOnly
           />
         </div>
