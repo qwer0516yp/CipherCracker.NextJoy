@@ -17,7 +17,6 @@ import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import MediationIcon from '@mui/icons-material/MediationRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -25,6 +24,10 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import AbcIcon from '@mui/icons-material/Abc';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
+import TagIcon from '@mui/icons-material/Tag';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import KeyIcon from '@mui/icons-material/Key';
+import Filter3Icon from '@mui/icons-material/Filter3';
 
 import SidebarDrawer from './SidebarDrawer';
 
@@ -164,7 +167,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <AssignmentRoundedIcon />
+                  <MediationIcon />
                   <ListItemContent>
                     <Typography level="title-sm">Hashing</Typography>
                   </ListItemContent>
@@ -177,7 +180,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
               <List sx={{ gap: 0.5 }}>
                 <ListItem>
                   <ListItemButton>
-                    <MediationIcon />
+                    <TagIcon />
                     <ListItemContent>
                       <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">Hash</Typography>
@@ -191,6 +194,45 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                     <ListItemContent>
                       <NextLink color="neutral" href="/hmac" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">HMAC</Typography>
+                      </NextLink>
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Toggler>
+          </ListItem>
+
+          <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <KeyIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Symmetric</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                  />
+                </ListItemButton>
+              )}
+            >
+              <List sx={{ gap: 0.5 }}>
+                <ListItem>
+                  <ListItemButton>
+                    <VerifiedIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/AES" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">AES</Typography>
+                      </NextLink> 
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <Filter3Icon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/3DES" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">3DES</Typography>
                       </NextLink>
                     </ListItemContent>
                   </ListItemButton>
