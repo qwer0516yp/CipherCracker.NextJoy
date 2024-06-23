@@ -15,19 +15,19 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 function SiteMapCard() {
   return (
     <Card>
-      <AspectRatio minHeight="120px" maxHeight="550px">
+      <AspectRatio minHeight="120px" maxHeight="750px" sx={{resize:'horizontal',  overflow: 'auto'}}>
         <Image
           alt="sitemap"
-          src="https://res.cloudinary.com/di3v5uowz/image/upload/v1718795150/sitemap_iiemll.png"
-          width={1981}
-          height={820}
+          src="https://res.cloudinary.com/di3v5uowz/image/upload/v1719114445/sitemap_iiemll.png"
+          width={1400}
+          height={600}
           quality={100}
           sizes="100vw"
           // Make the image display full width
           style={{
             width: '100%',
             height: 'auto',
-            objectFit: 'cover'
+            objectFit: 'contain'
           }}
           loading="lazy"
         />
