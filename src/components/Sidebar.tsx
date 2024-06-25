@@ -226,7 +226,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                   <ListItemButton>
                     <VerifiedIcon />
                     <ListItemContent>
-                      <NextLink color="neutral" href="/AES" style={{textDecoration: 'none'}} passHref>
+                      <NextLink color="neutral" href="/aes" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">AES</Typography>
                       </NextLink> 
                     </ListItemContent>
