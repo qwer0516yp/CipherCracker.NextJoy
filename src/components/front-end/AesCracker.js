@@ -44,7 +44,7 @@ export default function AesCracker() {
   const [aesPaddingRadio, setAesPaddingRadio] = useState('Pkcs7');
   const [aesPadding, setAesPadding] = useState(CryptoJS.pad.Pkcs7);
 
-  const [isPrefixIvChecked, setIsPrefixIvChecked] = React.useState(false);
+  const [isIvConcatChecked, setIsIvConcatChecked] = React.useState(false);
 
   const [aesKeySize, setAesKeySize] = React.useState(16); // default to 128 bits key for AES-128
   const [isKeyGenerateControl, setIsKeyGenerateControl] =
@@ -94,7 +94,7 @@ export default function AesCracker() {
       setEncryptionSnapshotResult(encrypted);
       setEncryptionSnapshotMessage(messageToEncrypt.toString());
 
-      if (isPrefixIvChecked) {
+      if (isIvConcatChecked) {
         const concatinatedHex =
           encrypted.iv.toString(CryptoJS.enc.Hex) +
           encrypted.ciphertext.toString(CryptoJS.enc.Hex);
@@ -111,6 +111,65 @@ export default function AesCracker() {
       setEncryptionSnapshotMessage('');
       setSnackbarColor('danger');
       setSnackbarMessage('Error Encrypted message : ' + error);
+    }
+    setSnackBarOpen(true);
+  };
+
+  //Decrypt
+  const [decryptionConcatBase64, setDecryptionConcatBase64] =
+    React.useState('');
+  const [decryptionIvBase64, setDecryptionIvBase64] = React.useState('');
+  const [decryptionCipherTextBase64, setDecryptionCipherTextBase64] =
+    React.useState('');
+  const [decryptedText, setDecryptedText] = React.useState('');
+  const Decrypt = () => {
+    try {
+      let ivHex = '';
+      let ciphertextHex = '';
+
+      if (isIvConcatChecked) {
+        const concatinatedHex = CryptoJS.enc.Base64.parse(
+          decryptionConcatBase64
+        ).toString(CryptoJS.enc.Hex);
+
+        ivHex = concatinatedHex.substring(0, 32);
+        ciphertextHex = concatinatedHex.substring(32);
+      } else {
+        ivHex = CryptoJS.enc.Base64.parse(decryptionIvBase64).toString(
+          CryptoJS.enc.Hex
+        );
+        ciphertextHex = CryptoJS.enc.Base64.parse(
+          decryptionCipherTextBase64
+        ).toString(CryptoJS.enc.Hex);
+      }
+
+      const options = {
+        iv: CryptoJS.enc.Hex.parse(ivHex),
+        mode: aesBlockMode,
+        padding: aesPadding
+      };
+
+      const plaintext = CryptoJS.AES.decrypt(
+        CryptoJS.enc.Hex.parse(ciphertextHex).toString(CryptoJS.enc.Base64),
+        CryptoJS.enc.Base64.parse(aesKeyBase64),
+        options
+      ).toString(CryptoJS.enc.Utf8);
+
+      if (plaintext.length < 1) {
+        setDecryptedText('');
+        setSnackbarColor('danger');
+        setSnackbarMessage(
+          'Decrypt message failed. Please check your cipher content and retry!'
+        );
+      } else {
+        setDecryptedText(plaintext);
+        setSnackbarColor('success');
+        setSnackbarMessage('Decrypt message sucessfully!');
+      }
+    } catch (error) {
+      setSnackbarColor('danger');
+      setDecryptedText('');
+      setSnackbarMessage('Error Decrypting message : ' + error);
     }
     setSnackBarOpen(true);
   };
@@ -183,8 +242,8 @@ export default function AesCracker() {
     }
   };
 
-  const handleIsPrefixIvCheckedChange = (event) => {
-    setIsPrefixIvChecked(event.target.checked);
+  const handleIsIvConcatCheckedChange = (event) => {
+    setIsIvConcatChecked(event.target.checked);
   };
 
   return (
@@ -211,9 +270,7 @@ export default function AesCracker() {
               {aesKeyBase64}, HEX:
               {aesKeyHex})
             </span>
-            <span>
-              expect IV prefixed with ciphertext: {isPrefixIvChecked.toString()}
-            </span>
+            <span>IV-ciphertext concat: {isIvConcatChecked.toString()}</span>
           </Card>
         )}
         <Tabs
@@ -310,17 +367,17 @@ export default function AesCracker() {
                       <FormControl sx={{ width: 400 }}>
                         <FormLabel>IV</FormLabel>
                         <Checkbox
-                          checked={isPrefixIvChecked}
-                          onChange={handleIsPrefixIvCheckedChange}
+                          checked={isIvConcatChecked}
+                          onChange={handleIsIvConcatCheckedChange}
                           label={
                             <React.Fragment>
-                              Prefix ciphertext bytes with IV bytes
+                              Concat IV bytes with ciphertext bytes
                             </React.Fragment>
                           }
                         />
                         <FormHelperText>
                           <Typography level="body-sm">
-                            like this: [16_bytes_iv][ciphertext_bytes].
+                            like: [16_bytes_iv][ciphertext_bytes].
                           </Typography>
                         </FormHelperText>
                       </FormControl>
@@ -502,7 +559,7 @@ export default function AesCracker() {
                   <Box sx={{ mb: 1 }}>
                     <span>Original Message: {encryptionSnapshotMessage}</span>
 
-                    {isPrefixIvChecked && (
+                    {isIvConcatChecked && (
                       <>
                         <p>
                           Concatinated Cipher (Hex):{' '}
@@ -515,7 +572,7 @@ export default function AesCracker() {
                         </p>
                       </>
                     )}
-
+                    <p>Details:</p>
                     <p>
                       Encrypted ciphertext (Hex):{' '}
                       {encryptionSnapshotResult.ciphertext.toString(
@@ -562,7 +619,59 @@ export default function AesCracker() {
             )}
           </TabPanel>
           <TabPanel value={2}>
-            <b>Decrypt</b> tab panel TODO
+            <Card>
+              <Box sx={{ mb: 1 }}>
+                <Typography level="title-md">AES Decrypt</Typography>
+                <Typography level="body-sm">
+                  Provide cipher content you want to decrypt. decrypted result
+                  will be displayed as utf-8 string.
+                </Typography>
+              </Box>
+
+              <Divider />
+              <Box sx={{ mb: 1 }}>
+                <Textarea
+                  value={decryptionConcatBase64}
+                  onChange={(event) =>
+                    setDecryptionConcatBase64(event.target.value)
+                  }
+                  minRows={3}
+                  maxRows={5}
+                  placeholder="type in your iv-ciphertext concat in Base64 string here..."
+                  endDecorator={
+                    <Typography level="body-xs" sx={{ ml: 'auto' }}>
+                      {decryptionConcatBase64.length} character(s)
+                    </Typography>
+                  }
+                />
+              </Box>
+              <CardOverflow
+                sx={{ borderTop: '1px solid', borderColor: 'divider' }}
+              >
+                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+                  <Button
+                    size="sm"
+                    color="success"
+                    variant="solid"
+                    onClick={() => Decrypt()}
+                  >
+                    Decrypt
+                  </Button>
+                </CardActions>
+              </CardOverflow>
+            </Card>
+            <br />
+            {decryptedText && (
+              <Card>
+                <Box sx={{ mb: 1 }}>
+                  <Typography level="title-md">AES Decrypt Result</Typography>
+                </Box>
+                <Divider />
+                <Box sx={{ mb: 1 }}>
+                  <span>Decrypted plaintext: {decryptedText}</span>
+                </Box>
+              </Card>
+            )}
           </TabPanel>
         </Tabs>
       </Box>
