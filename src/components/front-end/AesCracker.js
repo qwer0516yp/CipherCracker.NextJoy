@@ -466,7 +466,9 @@ export default function AesCracker() {
                   </Stack>
 
                   <Stack spacing={1}>
-                    <FormLabel>Key - {JSON.stringify(isValidKey)}</FormLabel>
+                    <FormLabel>
+                      Key - Valid: {JSON.stringify(isValidKey)}
+                    </FormLabel>
                     <FormControl
                       sx={{
                         display: { sm: 'flex-column', md: 'flex-row' },
@@ -572,7 +574,7 @@ export default function AesCracker() {
                         </p>
                       </>
                     )}
-                    <p>Details:</p>
+                    <p>===== Details: =====</p>
                     <p>
                       Encrypted ciphertext (Hex):{' '}
                       {encryptionSnapshotResult.ciphertext.toString(
@@ -630,20 +632,43 @@ export default function AesCracker() {
 
               <Divider />
               <Box sx={{ mb: 1 }}>
-                <Textarea
-                  value={decryptionConcatBase64}
-                  onChange={(event) =>
-                    setDecryptionConcatBase64(event.target.value)
-                  }
-                  minRows={3}
-                  maxRows={5}
-                  placeholder="type in your iv-ciphertext concat in Base64 string here..."
-                  endDecorator={
-                    <Typography level="body-xs" sx={{ ml: 'auto' }}>
-                      {decryptionConcatBase64.length} character(s)
-                    </Typography>
-                  }
-                />
+                {isIvConcatChecked && (
+                  <Textarea
+                    value={decryptionConcatBase64}
+                    onChange={(event) =>
+                      setDecryptionConcatBase64(event.target.value)
+                    }
+                    minRows={3}
+                    maxRows={5}
+                    placeholder="type in your iv-ciphertext concat in Base64 string here..."
+                    endDecorator={
+                      <Typography level="body-xs" sx={{ ml: 'auto' }}>
+                        {decryptionConcatBase64.length} character(s)
+                      </Typography>
+                    }
+                  />
+                )}
+                {!isIvConcatChecked && (
+                  <>
+                    <Input
+                      size="md"
+                      placeholder="Provide Iv as Base64 string"
+                      value={decryptionIvBase64}
+                      onChange={(event) =>
+                        setDecryptionIvBase64(event.target.value)
+                      }
+                    />
+                    <br />
+                    <Input
+                      size="md"
+                      placeholder="Provide Ciphertext as Base64 string"
+                      value={decryptionCipherTextBase64}
+                      onChange={(event) =>
+                        setDecryptionCipherTextBase64(event.target.value)
+                      }
+                    />
+                  </>
+                )}
               </Box>
               <CardOverflow
                 sx={{ borderTop: '1px solid', borderColor: 'divider' }}
