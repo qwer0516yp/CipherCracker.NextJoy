@@ -37,6 +37,9 @@ export default function AesCracker() {
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
+  const [aesBlockModeRadio, setAesBlockModeRadio] = useState('CBC');
+  const [aesPaddingRadio, setAesPaddingRadio] = useState('Pkcs7');
+
   const [aesKeySize, setAesKeySize] = React.useState(16); // default to 128 bits key for AES-128
   const [isKeyGenerateControl, setIsKeyGenerateControl] =
     React.useState('true');
@@ -175,6 +178,42 @@ export default function AesCracker() {
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
                   <Stack spacing={1}>
                     <FormControl>
+                      <FormLabel>Block Mode - {aesBlockModeRadio}</FormLabel>
+                      <RadioGroup
+                        orientation="horizontal"
+                        value={aesBlockModeRadio}
+                        onChange={(event) =>
+                          setAesBlockModeRadio(event.target.value)
+                        }
+                      >
+                        <Radio value="CBC" label="CBC (Default)" />
+                        <Radio value="CTR" label="CTR" />
+                        <Radio value="OFB" label="OFB" />
+                        <Radio value="ECB" label="ECB" />
+                        <Radio value="CFB" label="CFB" />
+                      </RadioGroup>
+                    </FormControl>
+                  </Stack>
+
+                  <Stack spacing={1}>
+                    <FormControl>
+                      <FormLabel>Padding - {aesPaddingRadio}</FormLabel>
+                      <RadioGroup
+                        orientation="horizontal"
+                        value={aesPaddingRadio}
+                        onChange={(event) =>
+                          setAesPaddingRadio(event.target.value)
+                        }
+                      >
+                        <Radio value="Pkcs7" label="Pkcs7 (Default)" />
+                        <Radio value="ZeroPadding" label="ZeroPadding" />
+                        <Radio value="NoPadding" label="NoPadding" />
+                      </RadioGroup>
+                    </FormControl>
+                  </Stack>
+                  <Divider />
+                  <Stack spacing={1}>
+                    <FormControl>
                       <FormLabel>
                         Key Size (bits) - {aesKeySize} bytes
                       </FormLabel>
@@ -183,7 +222,7 @@ export default function AesCracker() {
                         value={aesKeySize}
                         onChange={(event) => setAesKeySize(event.target.value)}
                       >
-                        <Radio value={16} label="AES-128" />
+                        <Radio value={16} label="AES-128 (Default)" />
                         <Radio value={24} label="AES-192" />
                         <Radio value={32} label="AES-256" />
                       </RadioGroup>
@@ -317,8 +356,10 @@ export default function AesCracker() {
       )}
       {isValidKey && (
         <Card variant="soft" color="success">
-          <CheckIcon /> Cracker is ready for AES-{aesKeySize * 8} content
-          Encrypt & Decrypt, with AES key (Base64: {aesKeyBase64}, HEX:
+          <CheckIcon /> Cracker is ready for AES-{aesKeySize * 8}-
+          {aesBlockModeRadio} Encrypt & Decrypt, padding {aesPaddingRadio} with
+          AES key (Base64:
+          {aesKeyBase64}, HEX:
           {aesKeyHex})
         </Card>
       )}
