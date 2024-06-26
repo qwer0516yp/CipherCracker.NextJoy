@@ -6,8 +6,6 @@ import CryptoJS from 'crypto-js';
 import {
   Box,
   Input,
-  Select,
-  Option,
   Typography,
   Button,
   IconButton,
@@ -24,7 +22,9 @@ import {
   CardActions,
   Divider,
   Stack,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  Checkbox,
+  FormHelperText
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 
@@ -39,6 +39,8 @@ export default function AesCracker() {
 
   const [aesBlockModeRadio, setAesBlockModeRadio] = useState('CBC');
   const [aesPaddingRadio, setAesPaddingRadio] = useState('Pkcs7');
+
+  const [isPrefixIvChecked, setIsPrefixIvChecked] = React.useState(false);
 
   const [aesKeySize, setAesKeySize] = React.useState(16); // default to 128 bits key for AES-128
   const [isKeyGenerateControl, setIsKeyGenerateControl] =
@@ -115,6 +117,10 @@ export default function AesCracker() {
       setAesKeyHex(CryptoJS.enc.Hex.stringify(keyBytes));
       setAesKeyBase64(CryptoJS.enc.Base64.stringify(keyBytes));
     }
+  };
+
+  const handleIsPrefixIvCheckedChange = (event) => {
+    setIsPrefixIvChecked(event.target.checked);
   };
 
   return (
@@ -210,6 +216,28 @@ export default function AesCracker() {
                         <Radio value="NoPadding" label="NoPadding" />
                       </RadioGroup>
                     </FormControl>
+                  </Stack>
+                  <Divider />
+                  <Stack spacing={1}>
+                    <Stack direction="row" spacing={2}>
+                      <FormControl sx={{ width: 400 }}>
+                        <FormLabel>IV</FormLabel>
+                        <Checkbox
+                          checked={isPrefixIvChecked}
+                          onChange={handleIsPrefixIvCheckedChange}
+                          label={
+                            <React.Fragment>
+                              Prefix ciphertext bytes with IV bytes
+                            </React.Fragment>
+                          }
+                        />
+                        <FormHelperText>
+                          <Typography level="body-sm">
+                            like this: [16_bytes_iv][ciphertext_bytes].
+                          </Typography>
+                        </FormHelperText>
+                      </FormControl>
+                    </Stack>
                   </Stack>
                   <Divider />
                   <Stack spacing={1}>
@@ -360,7 +388,8 @@ export default function AesCracker() {
           {aesBlockModeRadio} Encrypt & Decrypt, padding {aesPaddingRadio} with
           AES key (Base64:
           {aesKeyBase64}, HEX:
-          {aesKeyHex})
+          {aesKeyHex}), expect Iv Prefixed with ciphertext:{' '}
+          {isPrefixIvChecked.toString()}
         </Card>
       )}
 
