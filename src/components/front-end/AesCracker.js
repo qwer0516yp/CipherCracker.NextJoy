@@ -24,7 +24,8 @@ import {
   Stack,
   ToggleButtonGroup,
   Checkbox,
-  FormHelperText
+  FormHelperText,
+  Textarea
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 
@@ -35,10 +36,13 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 export default function AesCracker() {
   //Snackbar for showing none essential error when converting bytes into certain encoding
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
+  const [snackbarColor, setSnackbarColor] = useState('warning');
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [aesBlockModeRadio, setAesBlockModeRadio] = useState('CBC');
+  const [aesBlockMode, setAesBlockMode] = useState(CryptoJS.mode.CBC);
   const [aesPaddingRadio, setAesPaddingRadio] = useState('Pkcs7');
+  const [aesPadding, setAesPadding] = useState(CryptoJS.pad.Pkcs7);
 
   const [isPrefixIvChecked, setIsPrefixIvChecked] = React.useState(false);
 
@@ -55,12 +59,72 @@ export default function AesCracker() {
   const [aesKeyBase64, setAesKeyBase64] = React.useState('');
   const [isValidKey, setIsValidKey] = React.useState(false);
 
+  //Encrypt
+  const [messageToEncrypt, SetMessageToEncrypt] = React.useState('');
+  const [encryptionIvHex, setEncryptionIvHex] = React.useState('');
+  const [encryptionIvBase64, setEncryptionIvBase64] = React.useState('');
+  const [encryptionSnapshotMessage, setEncryptionSnapshotMessage] =
+    React.useState('');
+  const [encryptionConcatinatedCipherHex, setEncryptionConcatinatedCipherHex] =
+    React.useState('');
+  const [
+    encryptionConcatinatedCipherBase64,
+    setEncryptionConcatinatedCipherBase64
+  ] = React.useState('');
+  const [encryptionSnapshotResult, setEncryptionSnapshotResult] =
+    React.useState();
+
+  const Encrypt = () => {
+    try {
+      const encryptIvBytes = CryptoJS.lib.WordArray.random(16);
+      const options = {
+        iv: encryptIvBytes,
+        mode: aesBlockMode,
+        padding: aesPadding
+      };
+      setEncryptionIvHex(encryptIvBytes.toString(CryptoJS.enc.Hex));
+      setEncryptionIvBase64(encryptIvBytes.toString(CryptoJS.enc.Base64));
+
+      const encrypted = CryptoJS.AES.encrypt(
+        messageToEncrypt,
+        CryptoJS.enc.Base64.parse(aesKeyBase64),
+        options
+      );
+
+      setEncryptionSnapshotResult(encrypted);
+      setEncryptionSnapshotMessage(messageToEncrypt.toString());
+
+      if (isPrefixIvChecked) {
+        const concatinatedHex =
+          encrypted.iv.toString(CryptoJS.enc.Hex) +
+          encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+        setEncryptionConcatinatedCipherHex(concatinatedHex);
+        setEncryptionConcatinatedCipherBase64(
+          CryptoJS.enc.Hex.parse(concatinatedHex).toString(CryptoJS.enc.Base64)
+        );
+      }
+
+      setSnackbarColor('success');
+      setSnackbarMessage('Encrypt message sucessfully!');
+    } catch (error) {
+      setEncryptionSnapshotResult();
+      setEncryptionSnapshotMessage('');
+      setSnackbarColor('danger');
+      setSnackbarMessage('Error Encrypted message : ' + error);
+    }
+    setSnackBarOpen(true);
+  };
+
   const CheckUserSpecifiedKey = () => {
     const isValidUserInputKey = ValidateUserInputKey();
 
     if (isValidUserInputKey) {
-      setSnackbarMessage('Your provided key looks good!');
+      setSnackbarColor('success');
+      setSnackbarMessage(
+        'Your provided key looks good! You can Save to Apply if you want.'
+      );
     } else {
+      setSnackbarColor('danger');
       setSnackbarMessage(
         'Your provided key looks invalid, please check encoding length and content!'
       );
@@ -129,6 +193,29 @@ export default function AesCracker() {
         AES Cracker
       </Typography>
       <Box>
+        {!isValidKey && (
+          <Card variant="soft" color="danger">
+            <WarningIcon /> Please go to Settings tab, set or generate a *VALID*
+            AES key before you can encrypt and decrypt content.
+          </Card>
+        )}
+        {isValidKey && (
+          <Card variant="soft" color="success">
+            <CheckIcon />
+            <span>
+              Cracker is ready for AES-{aesKeySize * 8}-{aesBlockModeRadio}{' '}
+              Encrypt & Decrypt.
+            </span>
+            <span>
+              Padding {aesPaddingRadio} with AES key (Base64:
+              {aesKeyBase64}, HEX:
+              {aesKeyHex})
+            </span>
+            <span>
+              expect IV prefixed with ciphertext: {isPrefixIvChecked.toString()}
+            </span>
+          </Card>
+        )}
         <Tabs
           defaultValue={0}
           sx={{
@@ -137,7 +224,7 @@ export default function AesCracker() {
         >
           <TabList
             tabFlex={1}
-            size="sm"
+            size="md"
             sx={{
               pl: { xs: 0, md: 4 },
               justifyContent: 'left',
@@ -369,34 +456,121 @@ export default function AesCracker() {
             </Card>
           </TabPanel>
           <TabPanel value={1}>
-            <b>Encrypt</b> tab panel TODO
+            <Card>
+              <Box sx={{ mb: 1 }}>
+                <Typography level="title-md">AES Encrypt</Typography>
+                <Typography level="body-sm">
+                  Provide message you want to encrypt. Text message will be
+                  taken as utf-8 string.
+                </Typography>
+              </Box>
+
+              <Divider />
+              <Box sx={{ mb: 1 }}>
+                <Textarea
+                  value={messageToEncrypt}
+                  onChange={(event) => SetMessageToEncrypt(event.target.value)}
+                  minRows={3}
+                  maxRows={5}
+                  placeholder="type in your text here..."
+                  endDecorator={
+                    <Typography level="body-xs" sx={{ ml: 'auto' }}>
+                      {messageToEncrypt.length} character(s)
+                    </Typography>
+                  }
+                />
+              </Box>
+              <CardOverflow
+                sx={{ borderTop: '1px solid', borderColor: 'divider' }}
+              >
+                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+                  <Button size="sm" variant="solid" onClick={() => Encrypt()}>
+                    Encrypt
+                  </Button>
+                </CardActions>
+              </CardOverflow>
+            </Card>
+
+            {encryptionSnapshotMessage && (
+              <>
+                <br />
+                <Card>
+                  <Box sx={{ mb: 1 }}>
+                    <Typography level="title-md">AES Encrypt Result</Typography>
+                  </Box>
+                  <Divider />
+                  <Box sx={{ mb: 1 }}>
+                    <span>Original Message: {encryptionSnapshotMessage}</span>
+
+                    {isPrefixIvChecked && (
+                      <>
+                        <p>
+                          Concatinated Cipher (Hex):{' '}
+                          {encryptionConcatinatedCipherHex} (
+                          {encryptionConcatinatedCipherHex.length / 2} bytes)
+                        </p>
+                        <p>
+                          Concatinated Cipher (base64):{' '}
+                          {encryptionConcatinatedCipherBase64}
+                        </p>
+                      </>
+                    )}
+
+                    <p>
+                      Encrypted ciphertext (Hex):{' '}
+                      {encryptionSnapshotResult.ciphertext.toString(
+                        CryptoJS.enc.Hex
+                      )}{' '}
+                      ({encryptionSnapshotResult.ciphertext.sigBytes} bytes)
+                    </p>
+                    <p>
+                      Encrypted ciphertext (Base64):{' '}
+                      {encryptionSnapshotResult.ciphertext.toString(
+                        CryptoJS.enc.Base64
+                      )}
+                    </p>
+                    <p>
+                      IV (Hex): {encryptionIvHex} ({encryptionIvHex.length / 2}{' '}
+                      bytes)
+                    </p>
+                    <p>IV (Base64): {encryptionIvBase64}</p>
+                    <p>
+                      Salt (Hex):{' '}
+                      {encryptionSnapshotResult.salt
+                        ? encryptionSnapshotResult.salt.toString(
+                            CryptoJS.enc.Hex
+                          )
+                        : 'No salt'}
+                    </p>
+                    <p>
+                      Key (Hex):{' '}
+                      {encryptionSnapshotResult.key
+                        ? encryptionSnapshotResult.key.toString(
+                            CryptoJS.enc.Hex
+                          )
+                        : 'No key'}
+                    </p>
+                    <p>
+                      blockSize (number of 32 bits word):{' '}
+                      {encryptionSnapshotResult.blockSize
+                        ? encryptionSnapshotResult.blockSize
+                        : 'Block size not directly accessible'}
+                    </p>
+                  </Box>
+                </Card>
+              </>
+            )}
           </TabPanel>
           <TabPanel value={2}>
             <b>Decrypt</b> tab panel TODO
           </TabPanel>
         </Tabs>
       </Box>
-      {!isValidKey && (
-        <Card variant="soft" color="danger">
-          <WarningIcon /> Please go to Settings tab, set or generate a *VALID*
-          AES key before you can encrypt and decrypt content.
-        </Card>
-      )}
-      {isValidKey && (
-        <Card variant="soft" color="success">
-          <CheckIcon /> Cracker is ready for AES-{aesKeySize * 8}-
-          {aesBlockModeRadio} Encrypt & Decrypt, padding {aesPaddingRadio} with
-          AES key (Base64:
-          {aesKeyBase64}, HEX:
-          {aesKeyHex}), expect Iv Prefixed with ciphertext:{' '}
-          {isPrefixIvChecked.toString()}
-        </Card>
-      )}
 
       <Snackbar
         autoHideDuration={3000}
         variant="soft"
-        color="warning"
+        color={snackbarColor}
         size="lg"
         invertedColors
         open={snackBarOpen}
