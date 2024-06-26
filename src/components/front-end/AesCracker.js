@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
 
 import {
-  Textarea,
   Box,
-  Chip,
   Input,
-  Alert,
   Select,
   Option,
   Typography,
@@ -27,7 +24,6 @@ import {
   CardActions,
   Divider,
   Stack,
-  AspectRatio,
   ToggleButtonGroup
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
@@ -35,7 +31,6 @@ import Tab, { tabClasses } from '@mui/joy/Tab';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 
 export default function AesCracker() {
   //Snackbar for showing none essential error when converting bytes into certain encoding
@@ -54,19 +49,6 @@ export default function AesCracker() {
   const [aesKeyHex, setAesKeyHex] = React.useState('');
   const [aesKeyBase64, setAesKeyBase64] = React.useState('');
   const [isValidKey, setIsValidKey] = React.useState(false);
-
-  const [variant, setVariant] = React.useState('plain');
-  //userinput textarea
-  const [input, setInput] = useState('');
-  const [isValidInput, setIsValidInput] = useState(true);
-  const [encoding, setEncoding] = useState(CryptoJS.enc.Utf8);
-
-  //Hex
-  const [hexText, setHexText] = useState('');
-  //Base64
-  const [base64Text, setBase64Text] = useState('');
-  //Utf-8
-  const [utf8Text, setUtf8Text] = useState('');
 
   const CheckUserSpecifiedKey = () => {
     const isValidUserInputKey = ValidateUserInputKey();
@@ -132,49 +114,6 @@ export default function AesCracker() {
     }
   };
 
-  const ConvertUserInput = (userInput) => {
-    try {
-      //Half byte or invalid hex character by default will be prefixed with or default to 0000 by CryptoJS parse, we want to tell user it is invalid.
-      if (
-        encoding === CryptoJS.enc.Hex &&
-        (userInput.length % 2 === 1 || !/^[0-9a-fA-F]+$/.test(userInput))
-      ) {
-        setIsValidInput(false);
-        return;
-      }
-
-      if (
-        encoding === CryptoJS.enc.Base64 &&
-        !/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$/.test(
-          userInput
-        )
-      ) {
-        setIsValidInput(false);
-        return;
-      }
-
-      let inputBytes = encoding.parse(userInput);
-      setHexText(CryptoJS.enc.Hex.stringify(inputBytes));
-      setBase64Text(CryptoJS.enc.Base64.stringify(inputBytes));
-
-      setIsValidInput(true);
-    } catch (error) {
-      console.error('Conversion error:', error);
-      setIsValidInput(false);
-      return;
-    }
-
-    let inputBytes = encoding.parse(userInput);
-    //not always successful, i.e. from a valid Latin1
-    try {
-      setUtf8Text(CryptoJS.enc.Utf8.stringify(inputBytes));
-    } catch (error) {
-      console.error('Conversion error:', error);
-      setSnackBarOpen(true);
-      setUtf8Text('');
-    }
-  };
-
   return (
     <React.Fragment>
       <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
@@ -231,7 +170,7 @@ export default function AesCracker() {
               <Stack
                 direction="row"
                 spacing={3}
-                sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
+                sx={{ display: { xs: 'flex', md: 'flex' }, my: 1 }}
               >
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
                   <Stack spacing={1}>
@@ -347,92 +286,6 @@ export default function AesCracker() {
                   </Stack>
                 </Stack>
               </Stack>
-              <Stack
-                direction="column"
-                spacing={2}
-                sx={{ display: { xs: 'flex', md: 'none' }, my: 1 }}
-              >
-                <Stack direction="row" spacing={2}>
-                  <Stack direction="column" spacing={1}>
-                    <AspectRatio
-                      ratio="1"
-                      maxHeight={108}
-                      sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
-                    >
-                      <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                        loading="lazy"
-                        alt=""
-                      />
-                    </AspectRatio>
-                    <IconButton
-                      aria-label="upload new picture"
-                      size="sm"
-                      variant="outlined"
-                      color="neutral"
-                      sx={{
-                        bgcolor: 'background.body',
-                        position: 'absolute',
-                        zIndex: 2,
-                        borderRadius: '50%',
-                        left: 85,
-                        top: 180,
-                        boxShadow: 'sm'
-                      }}
-                    ></IconButton>
-                  </Stack>
-                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl
-                      sx={{
-                        display: {
-                          sm: 'flex-column',
-                          md: 'flex-row'
-                        },
-                        gap: 2
-                      }}
-                    >
-                      <Input size="sm" placeholder="First name" />
-                      <Input size="sm" placeholder="Last name" />
-                    </FormControl>
-                  </Stack>
-                </Stack>
-                <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-                <div>
-                  <FormControl sx={{ display: { sm: 'contents' } }}>
-                    <FormLabel>Timezone</FormLabel>
-                    <Select size="sm" defaultValue="1">
-                      <Option value="1">
-                        Indochina Time (Bangkok){' '}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                      <Option value="2">
-                        Indochina Time (Ho Chi Minh City){' '}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                    </Select>
-                  </FormControl>
-                </div>
-              </Stack>
               <CardOverflow
                 sx={{ borderTop: '1px solid', borderColor: 'divider' }}
               >
@@ -465,7 +318,7 @@ export default function AesCracker() {
       {isValidKey && (
         <Card variant="soft" color="success">
           <CheckIcon /> Cracker is ready for AES-{aesKeySize * 8} content
-          Encrypt & Decrypt, with AES key (Base64: {aesKeyBase64}, HEX:{' '}
+          Encrypt & Decrypt, with AES key (Base64: {aesKeyBase64}, HEX:
           {aesKeyHex})
         </Card>
       )}
