@@ -236,7 +236,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                   <ListItemButton>
                     <Filter3Icon />
                     <ListItemContent>
-                      <NextLink color="neutral" href="/3DES" style={{textDecoration: 'none'}} passHref>
+                      <NextLink color="neutral" href="/3des" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">3DES</Typography>
                       </NextLink>
                     </ListItemContent>
