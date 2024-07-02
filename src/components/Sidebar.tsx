@@ -234,6 +234,16 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                 </ListItem>
                 <ListItem>
                   <ListItemButton>
+                    <VerifiedIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/aesgcm" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">AES-GCM (Server)</Typography>
+                      </NextLink> 
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
                     <Filter3Icon />
                     <ListItemContent>
                       <NextLink color="neutral" href="/3des" style={{textDecoration: 'none'}} passHref>

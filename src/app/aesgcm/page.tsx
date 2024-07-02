@@ -1,7 +1,12 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Input, Button, Typography, Card, Box, Switch } from '@mui/joy';
+import { Input, Button, Typography, Card, Box, Switch, Breadcrumbs } from '@mui/joy';
+import NextLink from 'next/link';
+
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+
 import { aes256gcmEncrypt, aes256gcmDecrypt, extractAuthTagAndCipherText } from '../../cryptoUtils';
 
 const Aes256GcmPage = () => {
@@ -46,15 +51,53 @@ const Aes256GcmPage = () => {
 
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
+      <Box
+        sx={{
+          position: 'initial',
+          top: { sm: -100, md: -110 },
+          bgcolor: 'background.body',
+          zIndex: 9995,
+        }}
+      >
+        <Box sx={{ px: { xs: 2, md: 6 } }}>
+          <Breadcrumbs
+            size="sm"
+            aria-label="breadcrumbs"
+            separator={<ChevronRightRoundedIcon />}
+            sx={{ pl: 0 }}
+          >
+            <NextLink
+              color="neutral"
+              href="/"
+              passHref
+            >
+              <HomeRoundedIcon />
+            </NextLink>
+            <NextLink
+              color="neutral"
+              href="/aesgcm"
+              style={{textDecoration: 'none'}}
+              passHref
+            >
+              AES GCM
+            </NextLink>
+          </Breadcrumbs>
+          </Box>
+
       <Box sx={{ px: { xs: 2, md: 6 } }}>
-        <Typography level="title-md">AES-256-GCM Preview</Typography>
+        <Typography level="title-md">AES-256-GCM</Typography>
+        <br />
+        <Typography component="p">
+            AES-256-GCM is a symmetric encryption algorithm that uses the same key for both encryption and decryption.
+            The key must be 32 bytes long and the IV be 12 bytes long.
+            The encrypted message will be in Base64 format.
+        </Typography>
+        <br />
+        <Typography component="p">
+            Notice: NOT like other modules (no secret leaves your browser), here Node Crypto Module is used for server rendering AES-256-GCM encrypt and decrypt content. Do NOT use your PROD key here if you don't trust the Vercel or this application hosting env.  
+        </Typography>
         <br />
         <Card>
-          <Typography component="p">
-            AES-256-GCM is a symmetric encryption algorithm that uses the same key for both encryption and decryption.
-            The key must be 32 bytes long and the IV must be 12 bytes long.
-            The encrypted message will be in Base64 format.
-          </Typography>
           <Typography level="body-md">Key (Base64)</Typography>
           <Input
             placeholder="Key (Base64), must be 32 bytes"
@@ -119,6 +162,7 @@ const Aes256GcmPage = () => {
         <Typography component="p">{decryptionResult}</Typography>
         </Card>
       </Box>
+    </Box>
     </Box>
   );
 };
