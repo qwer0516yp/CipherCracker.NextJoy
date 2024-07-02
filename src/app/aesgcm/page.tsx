@@ -1,29 +1,47 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Input, Button, Typography, Card, Box } from '@mui/joy';
-import { aes256gcmEncrypt, aes256gcmDecrypt } from '../../cryptoUtils';
+import { Input, Button, Typography, Card, Box, Switch } from '@mui/joy';
+import { aes256gcmEncrypt, aes256gcmDecrypt, extractAuthTagAndCipherText } from '../../cryptoUtils';
 
 const Aes256GcmPage = () => {
   const [keyBase64, setKeyBase64] = useState('');
   const [ivBase64, setIvBase64] = useState('');
   const [authTagBase64, setAuthTagBase64] = useState('');
-  const [encryptedMessageBase64, setEncryptedMessageBase64] = useState('');
+  const [encryptedMessageBase64, setEncryptedMessageBase64] = useState(''); 
   const [plainText, setPlainText] = useState('');
   const [encryptionResult, setEncryptionResult] = useState('');
   const [decryptionResult, setDecryptionResult] = useState('');
+  const [isAuthTagAppended, setIsAuthTagAppended] = useState(false);
+  const [cipherContentConcatBase64, setCipherContentConcatBase64] = useState('');
 
   const handleEncrypt = () => {
     const { ivBase64, encryptedDataBase64, authTagBase64 } = aes256gcmEncrypt(plainText, keyBase64);
     setEncryptedMessageBase64(encryptedDataBase64);
     setIvBase64(ivBase64);
     setAuthTagBase64(authTagBase64);
-    setEncryptionResult(`Encrypted: ${encryptedDataBase64}, IV: ${ivBase64}, AuthTag: ${authTagBase64}`);
+    setEncryptionResult(`Timestamp: ${new Date().toLocaleString()}, Encrypted: ${encryptedDataBase64}, IV: ${ivBase64}, AuthTag: ${authTagBase64}`);
   };
 
   const handleDecrypt = () => {
-    const decryptedData = aes256gcmDecrypt(encryptedMessageBase64, authTagBase64, ivBase64, keyBase64);
-    setDecryptionResult(`Decrypted: ${decryptedData}`);
+    try
+    {
+      let decryptedData = '';
+      if (!isAuthTagAppended)
+      {
+        decryptedData = aes256gcmDecrypt(encryptedMessageBase64, authTagBase64, ivBase64, keyBase64);  
+      }
+      else{
+        const {cipherTextBase64, authTagBase64} = extractAuthTagAndCipherText(cipherContentConcatBase64);
+        decryptedData = aes256gcmDecrypt(cipherTextBase64, authTagBase64, ivBase64, keyBase64);
+      }
+      
+      setDecryptionResult(`Timestamp: ${new Date().toLocaleString()}, Decrypted: ${decryptedData}`);
+    }
+    catch (error)
+    {
+      setDecryptionResult(`Timestamp: ${new Date().toLocaleString()}, error handleDecrypt, please check your content: ${error}`);
+    }
   };
 
   return (
@@ -69,16 +87,34 @@ const Aes256GcmPage = () => {
       <Box sx={{ px: { xs: 2, md: 6 } }}>
         <Card>
         <Typography level="body-md">Decryption</Typography>
-        <Input
-          placeholder="Encrypted Message (Base64) for Decryption"
-          value={encryptedMessageBase64}
-          onChange={(e) => setEncryptedMessageBase64(e.target.value)}
-        />
-        <Input
-          placeholder="AuthTag (Base64) for Decryption"
-          value={authTagBase64}
-          onChange={(e) => setAuthTagBase64(e.target.value)}
-        />
+        <Typography component="label" endDecorator={<Switch
+          checked={isAuthTagAppended}
+          onChange={(event) => setIsAuthTagAppended(event.target.checked)}
+        />}>
+          Append AuthTag after Ciphertext
+        </Typography>
+        {isAuthTagAppended && (
+          <Input
+            placeholder="Encrypted Message (Base64) with authTag/MAC bits for Decryption"
+            value={cipherContentConcatBase64}
+            onChange={(e) => setCipherContentConcatBase64(e.target.value)}
+          />  
+        )}
+        {!isAuthTagAppended && (
+          <>
+            <Input
+              placeholder="Encrypted Message (Base64) for Decryption"
+              value={encryptedMessageBase64}
+              onChange={(e) => setEncryptedMessageBase64(e.target.value)}
+            />
+            <Input
+              placeholder="AuthTag (Base64) for Decryption"
+              value={authTagBase64}
+              onChange={(e) => setAuthTagBase64(e.target.value)}
+            />
+          </>
+        )}
+        
         <Button color="success" onClick={handleDecrypt}>Decrypt</Button>
         <Typography component="p">{decryptionResult}</Typography>
         </Card>

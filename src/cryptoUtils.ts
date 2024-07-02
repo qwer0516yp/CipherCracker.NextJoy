@@ -29,3 +29,29 @@ export function aes256gcmDecrypt(encryptedDataBase64: string, authTagBase64: str
 
     return decrypted;
 }
+
+/**
+ * Extracts the AuthTag and CipherText from a concatenated Base64 string.
+ * 
+ * @param {string} concatBase64 - The concatenated Base64 string containing both the CipherText and AuthTag.
+ * @returns {{ cipherTextBase64: string, authTagBase64: string }} An object containing the AuthTag and CipherText as Base64 strings.
+ */
+export function extractAuthTagAndCipherText(concatBase64: string): { cipherTextBase64: string; authTagBase64: string} {
+    // Decode the concatenated Base64 string to a Buffer
+    const buffer = Buffer.from(concatBase64, 'base64');
+
+    // Ensure the buffer is longer than the length of an AuthTag (16 bytes for AES-GCM)
+    if (buffer.length <= 16) {
+        throw new Error('The input is too short to contain both an AuthTag and CipherText.');
+    }
+
+    // Extract the AuthTag (last 16 bytes) and CipherText (everything before the AuthTag)
+    const authTag = buffer.slice(buffer.length - 16);
+    const cipherText = buffer.slice(0, buffer.length - 16);
+
+    // Convert both parts back to Base64 strings
+    const authTagBase64 = authTag.toString('base64');
+    const cipherTextBase64 = cipherText.toString('base64');
+
+    return { cipherTextBase64: cipherTextBase64, authTagBase64: authTagBase64};
+}
