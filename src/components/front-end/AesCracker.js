@@ -682,14 +682,22 @@ export default function AesCracker() {
                 sx={{ borderTop: '1px solid', borderColor: 'divider' }}
               >
                 <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                  <Button
-                    size="sm"
-                    color="success"
-                    variant="solid"
-                    onClick={() => Decrypt()}
-                  >
-                    Decrypt
-                  </Button>
+                  {isValidKey && (
+                    <Button
+                      size="sm"
+                      color="success"
+                      variant="solid"
+                      onClick={() => Decrypt()}
+                    >
+                      Decrypt
+                    </Button>
+                  )}
+
+                  {!isValidKey && (
+                    <Typography level="title-md">
+                      A valid AES key is required!
+                    </Typography>
+                  )}
                 </CardActions>
               </CardOverflow>
             </Card>
