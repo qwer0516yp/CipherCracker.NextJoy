@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
+import { sha3_512 } from 'js-sha3';
 
 import {
   Textarea,
@@ -38,9 +39,7 @@ export default function HashGenerator() {
     setSha256HashedText(hash_sha256);
     const hash_sha512 = CryptoJS.SHA512(userInput).toString(CryptoJS.enc.Hex);
     setSha512HashedText(hash_sha512);
-    const hash_sha3_512 = CryptoJS.SHA3(userInput, {
-      outputLength: 512
-    }).toString(CryptoJS.enc.Hex);
+    const hash_sha3_512 = sha3_512(userInput);
     setSha3_512HashedText(hash_sha3_512);
   };
 
