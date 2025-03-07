@@ -275,7 +275,7 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                   <ListItemButton>
                     <SyncAltIcon />
                     <ListItemContent>
-                      <NextLink color="neutral" href="/RSA" style={{textDecoration: 'none'}} passHref>
+                      <NextLink color="neutral" href="/rsa" style={{textDecoration: 'none'}} passHref>
                         <Typography level="title-sm">RSA</Typography>
                       </NextLink> 
                     </ListItemContent>
