@@ -322,6 +322,16 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
                 </ListItem>
                 <ListItem>
                   <ListItemButton>
+                    <TokenIcon />
+                    <ListItemContent>
+                      <NextLink color="neutral" href="/jwk" style={{textDecoration: 'none'}} passHref>
+                        <Typography level="title-sm">JWK</Typography>
+                      </NextLink> 
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
                     <EnhancedEncryptionIcon />
                     <ListItemContent>
                       <NextLink color="neutral" href="/jwe" style={{textDecoration: 'none'}} passHref>
