@@ -1,45 +1,93 @@
-# Joy UI - Next.js App Router with TypeScript
+# CipherCracker
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/HEAD/packages/create-next-app).
+A free, open-source web-based cryptography toolkit for cracking ciphers, generating hashes, and working with encryption — all from your browser.
 
-## How to use
+**Live site:** [CipherCracker](https://github.com/qwer0516yp/CipherCracker.NextJoy)
+**Documentation:** [GitBook Docs](https://st-akey.gitbook.io/cipher-cracker-next-joy)
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+## Features
 
-<!-- #default-branch-switch -->
+### Encryption / Decryption
+
+- **AES** — symmetric encryption and decryption
+- **3DES (Triple DES)** — legacy symmetric cipher support
+- **RSA** — public-key encryption
+
+### Hashing & Authentication
+
+- **Hash Generator** — MD5, SHA-1, SHA-256, SHA-512, SHA-3
+- **HMAC Generator** — keyed-hash message authentication
+
+### Token & Key Tools
+
+- **JWT** — inspect and decode JSON Web Tokens
+- **JWE** — JSON Web Encryption
+- **JWK** — JSON Web Key management
+
+### Encoding / Decoding
+
+- **String Converter** — Base64, Hex, ASCII, URL encoding
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (App Router) + TypeScript
+- [Joy UI](https://mui.com/joy-ui/getting-started/) (MUI)
+- [crypto-js](https://github.com/brix/crypto-js) + [js-sha3](https://github.com/nicolo-ribaudo/js-sha3) for client-side cryptography
+- [NextAuth.js](https://next-auth.js.org/) for OAuth (GitHub, Google, Auth0)
+- [Vercel Analytics](https://vercel.com/analytics) + Speed Insights
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- [pnpm](https://pnpm.io/) (recommended)
+
+### Install & Run
 
 ```bash
-curl https://codeload.github.com/mui/material-ui/tar.gz/next | tar -xz --strip=2 material-ui-next/examples/joy-ui-nextjs-ts
-cd joy-ui-nextjs-ts
+pnpm install
+pnpm dev
 ```
 
-Install it and run:
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-```bash
-npm install
-npm run dev
+### Available Scripts
+
+| Command      | Description              |
+| ------------ | ------------------------ |
+| `pnpm dev`   | Start development server |
+| `pnpm build` | Create production build  |
+| `pnpm start` | Start production server  |
+| `pnpm lint`  | Run ESLint               |
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── 3des/              # 3DES tool
+│   ├── aes/               # AES tool
+│   ├── aesgcm/            # AES-256-GCM tool
+│   ├── encoding/          # String encoding/decoding
+│   ├── hash/              # Hash generator
+│   ├── hmac/              # HMAC generator
+│   ├── jwt/               # JWT inspector
+│   ├── jwe/               # JWE tools
+│   ├── jwk/               # JWK tools
+│   └── rsa/               # RSA encryption
+├── components/
+│   ├── front-end/         # Crypto tool UI components
+│   ├── Sidebar.tsx        # Navigation sidebar
+│   └── Header.tsx         # Page header
+└── lib/
+    └── auth.ts            # NextAuth configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your web browser to see the result.
+## Privacy
 
-or:
+Most cryptographic operations run entirely **client-side** — your data never leaves the browser. The AES-256-GCM page uses server-side rendering with Node.js crypto and includes a warning not to use production keys.
 
-<!-- #default-branch-switch -->
+## License
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/next/examples/joy-ui-nextjs-ts)
-
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/sandbox/github/mui/material-ui/tree/next/examples/joy-ui-nextjs-ts)
-
-## Learn more
-
-To learn more about this example:
-
-- [Next.js documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Customizing Joy UI](https://mui.com/joy-ui/customization/approaches/) - approaches to customizing Joy UI.
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation and continue by browsing the [templates](https://next.mui.com/joy-ui/getting-started/templates/) section.
+Open source. See repository for details.
