@@ -41,12 +41,87 @@ import { closeSidebar } from '../utils';
 import NextLink from 'next/link';
 import SessionProvider from "@/components/SessionProvider";
 
+interface NavItem {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+}
+
+interface NavGroup {
+  label: string;
+  icon: React.ReactNode;
+  items: NavItem[];
+}
+
+interface NavSection {
+  header: string;
+  items: (NavItem | NavGroup)[];
+}
+
+const navSections: NavSection[] = [
+  {
+    header: 'Basic',
+    items: [
+      { label: 'Encoding', href: '/encoding', icon: <AbcIcon /> },
+    ],
+  },
+  {
+    header: '',
+    items: [
+      {
+        label: 'Hashing',
+        icon: <MediationIcon />,
+        items: [
+          { label: 'Hash', href: '/hash', icon: <TagIcon /> },
+          { label: 'HMAC', href: '/hmac', icon: <EditNoteIcon /> },
+        ],
+      },
+      {
+        label: 'Symmetric',
+        icon: <KeyIcon />,
+        items: [
+          { label: 'AES', href: '/aes', icon: <VerifiedIcon /> },
+          { label: 'AES-GCM (Server)', href: '/aesgcm', icon: <VerifiedIcon /> },
+          { label: '3DES', href: '/3des', icon: <Filter3Icon /> },
+        ],
+      },
+      {
+        label: 'Asymmetric',
+        icon: <ShuffleIcon />,
+        items: [
+          { label: 'RSA', href: '/rsa', icon: <SyncAltIcon /> },
+          { label: 'ECC', href: '/ECC', icon: <AutoGraphIcon /> },
+        ],
+      },
+      {
+        label: 'JWT',
+        icon: <TokenIcon />,
+        items: [
+          { label: 'JWT / JWS', href: '/jwt', icon: <TokenIcon /> },
+          { label: 'JWK', href: '/jwk', icon: <TokenIcon /> },
+          { label: 'JWE', href: '/jwe', icon: <EnhancedEncryptionIcon /> },
+        ],
+      },
+    ],
+  },
+];
+
+function isGroup(item: NavItem | NavGroup): item is NavGroup {
+  return 'items' in item;
+}
+
+function matchesQuery(text: string, query: string): boolean {
+  return text.toLowerCase().includes(query.toLowerCase());
+}
+
 function Toggler({
   defaultExpanded = false,
+  forceOpen = false,
   renderToggle,
   children,
 }: {
   defaultExpanded?: boolean;
+  forceOpen?: boolean;
   children: React.ReactNode;
   renderToggle: (params: {
     open: boolean;
@@ -54,13 +129,14 @@ function Toggler({
   }) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(defaultExpanded);
+  const isOpen = forceOpen || open;
   return (
     <React.Fragment>
-      {renderToggle({ open, setOpen })}
+      {renderToggle({ open: isOpen, setOpen })}
       <Box
         sx={{
           display: 'grid',
-          gridTemplateRows: open ? '1fr' : '0fr',
+          gridTemplateRows: isOpen ? '1fr' : '0fr',
           transition: '0.2s ease',
           '& > *': {
             overflow: 'hidden',
@@ -74,6 +150,36 @@ function Toggler({
 }
 
 export default function Sidebar({children}: {children:React.ReactNode}) {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const filteredSections = React.useMemo(() => {
+    if (!searchQuery.trim()) return navSections;
+
+    return navSections
+      .map((section) => {
+        const filteredItems = section.items
+          .map((item) => {
+            if (isGroup(item)) {
+              const matchingChildren = item.items.filter((child) =>
+                matchesQuery(child.label, searchQuery)
+              );
+              const groupMatches = matchesQuery(item.label, searchQuery);
+              if (groupMatches) return item; // show entire group
+              if (matchingChildren.length > 0) return { ...item, items: matchingChildren };
+              return null;
+            }
+            return matchesQuery(item.label, searchQuery) ? item : null;
+          })
+          .filter(Boolean) as (NavItem | NavGroup)[];
+
+        if (filteredItems.length === 0) return null;
+        return { ...section, items: filteredItems };
+      })
+      .filter(Boolean) as NavSection[];
+  }, [searchQuery]);
+
+  const isSearching = searchQuery.trim().length > 0;
+
   return (
     <Sheet
       className="Sidebar"
@@ -133,7 +239,13 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
         <Typography level="title-md">CipherCracker</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="coming soon..." />
+      <Input
+        size="sm"
+        startDecorator={<SearchRoundedIcon />}
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <Box
         sx={{
           minHeight: 0,
@@ -154,195 +266,68 @@ export default function Sidebar({children}: {children:React.ReactNode}) {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-          <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-              Basic
-          </ListSubheader>
-          <ListItem>
-            <ListItemButton>
-              <AbcIcon />
-              <ListItemContent>
-                <NextLink color="neutral" href="/encoding" style={{textDecoration: 'none'}} passHref>
-                  <Typography level="title-sm">Encoding</Typography>
-                </NextLink> 
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <MediationIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Hashing</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
+          {filteredSections.map((section) => (
+            <React.Fragment key={section.header || 'main'}>
+              {section.header && (
+                <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
+                  {section.header}
+                </ListSubheader>
               )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem>
-                  <ListItemButton>
-                    <TagIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/hash" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">Hash</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <EditNoteIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/hmac" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">HMAC</Typography>
-                      </NextLink>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <KeyIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Symmetric</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
+              {section.items.map((item) =>
+                isGroup(item) ? (
+                  <ListItem nested key={item.label}>
+                    <Toggler
+                      forceOpen={isSearching}
+                      renderToggle={({ open, setOpen }) => (
+                        <ListItemButton onClick={() => setOpen(!open)}>
+                          {item.icon}
+                          <ListItemContent>
+                            <Typography level="title-sm">{item.label}</Typography>
+                          </ListItemContent>
+                          <KeyboardArrowDownIcon
+                            sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                          />
+                        </ListItemButton>
+                      )}
+                    >
+                      <List sx={{ gap: 0.5 }}>
+                        {item.items.map((child) => (
+                          <ListItem key={child.href}>
+                            <ListItemButton>
+                              {child.icon}
+                              <ListItemContent>
+                                <NextLink color="neutral" href={child.href} style={{textDecoration: 'none'}} passHref>
+                                  <Typography level="title-sm">{child.label}</Typography>
+                                </NextLink>
+                              </ListItemContent>
+                            </ListItemButton>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Toggler>
+                  </ListItem>
+                ) : (
+                  <ListItem key={(item as NavItem).href}>
+                    <ListItemButton>
+                      {item.icon}
+                      <ListItemContent>
+                        <NextLink color="neutral" href={(item as NavItem).href} style={{textDecoration: 'none'}} passHref>
+                          <Typography level="title-sm">{item.label}</Typography>
+                        </NextLink>
+                      </ListItemContent>
+                    </ListItemButton>
+                  </ListItem>
+                )
               )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem>
-                  <ListItemButton>
-                    <VerifiedIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/aes" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">AES</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <VerifiedIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/aesgcm" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">AES-GCM (Server)</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <Filter3Icon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/3des" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">3DES</Typography>
-                      </NextLink>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <ShuffleIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Asymmetric</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem>
-                  <ListItemButton>
-                    <SyncAltIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/rsa" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">RSA</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <AutoGraphIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/ECC" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">ECC</Typography>
-                      </NextLink>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <TokenIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">JWT</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem>
-                  <ListItemButton>
-                    <TokenIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/jwt" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">JWT / JWS</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <TokenIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/jwk" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">JWK</Typography>
-                      </NextLink> 
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <EnhancedEncryptionIcon />
-                    <ListItemContent>
-                      <NextLink color="neutral" href="/jwe" style={{textDecoration: 'none'}} passHref>
-                        <Typography level="title-sm">JWE</Typography>
-                      </NextLink>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
+            </React.Fragment>
+          ))}
+          {isSearching && filteredSections.length === 0 && (
+            <ListItem>
+              <Typography level="body-sm" sx={{ py: 1, px: 1, color: 'text.tertiary' }}>
+                No results found
+              </Typography>
+            </ListItem>
+          )}
         </List>
 
         <List
