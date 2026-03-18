@@ -32,6 +32,8 @@ export default function StringConvertor() {
   const [hexText, setHexText] = useState('');
   //Base64
   const [base64Text, setBase64Text] = useState('');
+  //Base64Url
+  const [base64UrlText, setBase64UrlText] = useState('');
   //Utf-8
   const [utf8Text, setUtf8Text] = useState('');
   //Utf-16
@@ -60,9 +62,27 @@ export default function StringConvertor() {
         return;
       }
 
-      let inputBytes = encoding.parse(userInput);
+      if (
+        encoding === 'base64url' &&
+        !/^[A-Za-z0-9_-]+$/.test(userInput)
+      ) {
+        setIsValidInput(false);
+        return;
+      }
+
+      let inputBytes;
+      if (encoding === 'base64url') {
+        // Convert Base64Url to standard Base64 then parse
+        let base64 = userInput.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) base64 += '=';
+        inputBytes = CryptoJS.enc.Base64.parse(base64);
+      } else {
+        inputBytes = encoding.parse(userInput);
+      }
       setHexText(CryptoJS.enc.Hex.stringify(inputBytes));
-      setBase64Text(CryptoJS.enc.Base64.stringify(inputBytes));
+      const base64Str = CryptoJS.enc.Base64.stringify(inputBytes);
+      setBase64Text(base64Str);
+      setBase64UrlText(base64Str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''));
 
       setIsValidInput(true);
     } catch (error) {
@@ -71,10 +91,17 @@ export default function StringConvertor() {
       return;
     }
 
-    let inputBytes = encoding.parse(userInput);
+    let inputBytes2;
+    if (encoding === 'base64url') {
+      let base64 = userInput.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) base64 += '=';
+      inputBytes2 = CryptoJS.enc.Base64.parse(base64);
+    } else {
+      inputBytes2 = encoding.parse(userInput);
+    }
     //not always successful, i.e. from a valid Latin1
     try {
-      setUtf8Text(CryptoJS.enc.Utf8.stringify(inputBytes));
+      setUtf8Text(CryptoJS.enc.Utf8.stringify(inputBytes2));
     } catch (error) {
       console.error('Conversion error:', error);
       setSnackBarOpen(true);
@@ -82,7 +109,7 @@ export default function StringConvertor() {
     }
 
     try {
-      setUtf16Text(CryptoJS.enc.Utf16.stringify(inputBytes));
+      setUtf16Text(CryptoJS.enc.Utf16.stringify(inputBytes2));
     } catch (error) {
       console.error('Conversion error:', error);
       setSnackBarOpen(true);
@@ -90,7 +117,7 @@ export default function StringConvertor() {
     }
 
     try {
-      setLatin1Text(CryptoJS.enc.Latin1.stringify(inputBytes));
+      setLatin1Text(CryptoJS.enc.Latin1.stringify(inputBytes2));
     } catch (error) {
       console.error('Conversion error:', error);
       setSnackBarOpen(true);
@@ -105,6 +132,9 @@ export default function StringConvertor() {
         break;
       case 'base64':
         setEncoding(CryptoJS.enc.Base64);
+        break;
+      case 'base64url':
+        setEncoding('base64url');
         break;
       case 'utf16':
         setEncoding(CryptoJS.enc.Utf16);
@@ -135,6 +165,7 @@ export default function StringConvertor() {
           <Option value="utf8">UTF-8</Option>
           <Option value="hex">HEX</Option>
           <Option value="base64">BASE64</Option>
+          <Option value="base64url">BASE64URL</Option>
           <Option value="utf16">UTF-16</Option>
           <Option value="latin1">Latin1</Option>
         </Select>
@@ -218,6 +249,36 @@ export default function StringConvertor() {
                 {`${base64Text.length} Character(s)`}
                 <IconButton
                   onClick={() => navigator.clipboard.writeText(base64Text)}
+                >
+                  <ContentCopyIcon />
+                </IconButton>
+              </>
+            }
+            readOnly
+          />
+        </div>
+      )}
+      {/* Base64Url */}
+      {input && isValidInput && base64UrlText && (
+        <div>
+          <Box
+            sx={{ display: 'flex', gap: 1, alignItems: 'center', padding: 1 }}
+          >
+            <Chip color="primary" variant="soft">
+              Base64Url
+            </Chip>
+            <Alert variant="soft">
+              URL-safe Base64: replaces + with -, / with _, and removes padding =
+            </Alert>
+          </Box>
+          <Input
+            type="text"
+            value={base64UrlText}
+            endDecorator={
+              <>
+                {`${base64UrlText.length} Character(s)`}
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(base64UrlText)}
                 >
                   <ContentCopyIcon />
                 </IconButton>
