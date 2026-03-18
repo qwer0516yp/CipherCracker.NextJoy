@@ -1,13 +1,47 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
+import { Box, Breadcrumbs } from '@mui/joy';
+import NextLink from 'next/link';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import JweCracker from '@/components/front-end/JweCracker';
 
-export default function App() {
+export default function JwePage() {
   return (
-    <iframe src="https://dinochiesa.github.io/jwt"
-    style={{width: '100%', height: '100%', border:'0', overflow:'hidden'}}
-     title="Online JWT Debugger"
-     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" />
+    <Box sx={{ flex: 1, width: '100%' }}>
+      <Box
+        sx={{
+          position: 'initial',
+          top: { sm: -100, md: -110 },
+          bgcolor: 'background.body',
+          zIndex: 9995,
+        }}
+      >
+        <Box sx={{ px: { xs: 2, md: 6 } }}>
+          <Breadcrumbs
+            size="sm"
+            aria-label="breadcrumbs"
+            separator={<ChevronRightRoundedIcon />}
+            sx={{ pl: 0 }}
+          >
+            <NextLink color="neutral" href="/" passHref>
+              <HomeRoundedIcon />
+            </NextLink>
+            <NextLink
+              color="neutral"
+              href="/jwe"
+              style={{ textDecoration: 'none' }}
+              passHref
+            >
+              JWE
+            </NextLink>
+          </Breadcrumbs>
+        </Box>
+      </Box>
+      <Box sx={{ px: { xs: 2, md: 6 } }}>
+        <JweCracker />
+      </Box>
+    </Box>
   );
 }
