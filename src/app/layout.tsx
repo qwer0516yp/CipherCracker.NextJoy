@@ -4,6 +4,7 @@ import { Box, CssBaseline } from '@mui/joy';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import ProtectedComponent from '@/components/ProtectedComponent';
+import ChatbotWidget from '@/components/ChatbotWidget';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -52,6 +53,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             {props.children}
           </Box>
         </Box>
+        <ChatbotWidget />
       </CssVarsProvider>
 
       <Analytics />
