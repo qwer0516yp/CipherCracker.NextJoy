@@ -10,6 +10,7 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
